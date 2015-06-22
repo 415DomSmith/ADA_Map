@@ -1,12 +1,55 @@
 <% include partials/landingHeader %>
+
 <div id="banner"> 
 
+	<h1 class="banner-content" id="logo">ADA Map</h1>
+	<h1 class="banner-content"> About</h1>
+	<h1 class="banner-content"> Learn</h1>
+	
+	<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
+	<h1 class="banner-content" id="issues"> Issues</h1>
 
 </div>
 
 <div id="main-content">
 
-<div id="map-canvas"></div>
+	<div id="map-canvas"></div>
+	<tbody id='tbody'>
+		<% issues.forEach(function(issue){ %>
+		<tr>
+			<td> 
+				<div class="issueBox-num"> AdaMap# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+
+				<div class="issueBox-img"><img src="<%= issue.image %>" style="width:40px; length:40px;"  alt="/assets/noImg.jpg"></div>
+
+				<div> <%= issue.city%> </div>
+			</td>
+			<td> 
+				<div class="issueBox-title"> <%= issue.title %> </div>
+				<div class="issueBox-user"> <%= issue.user %> </div>
+
+
+
+			</td>
+			<td><a href="https://www.google.com/maps/@<%=place.lat%>,<%=place.long%>,12z"><%= place.address %></a></td>
+			<td><a href="/places/<%= place.id%>/edit">Edit</a> </td>
+			<td> <form action="/places/<%= place._id %>?_method=delete" method="POST">
+									<input type="submit" value="X" class="btn btn-danger btn-xs" style="margin-left:25px"> 
+					</form>		
+			</td>
+		</tr>
+		<% }) %>
+	</tbody>
+	
+	<div id="issues-box">
+
+		
+
+
+
+
+	</div>
+
 
 
 

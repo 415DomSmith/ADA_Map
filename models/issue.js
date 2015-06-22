@@ -7,6 +7,7 @@ var issueSchema = new mongoose.Schema({
 	long: Number,
 	issueNum: Number,
 	image: String,
+	city: String,
 	views: Number,
 	votes: Number,
 	user: {

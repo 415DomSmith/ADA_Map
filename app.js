@@ -8,7 +8,9 @@ var express = require('express'),
     morgan = require("morgan"),
     request = require('request'),
     loginMiddleware = require("./middleware/loginHelper"),
-    routeMiddleware = require("./middleware/routeHelper");
+    routeMiddleware = require("./middleware/routeHelper"),
+
+    gKey = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
 
 
 
@@ -17,7 +19,7 @@ app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
 
 
@@ -54,10 +56,10 @@ app.get('/issues', function (req,res){
     })
   }); 
 });
- 
+
+//create a new issue -- this is called from both the issues index page AND the landing page 
 app.post('/issues', function (req,res){ 
-  
-});
+  })
 
 // app.get('//new', function (req,res){
 //   res.render('');
