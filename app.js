@@ -20,6 +20,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
 
+
+//root and index page
 app.get('/', function (req,res){
   db.Issue.find({}, function (err, issues){
     res.format({
@@ -36,40 +38,53 @@ app.get('/', function (req,res){
   }); 
 });
 
-app.get('/', function (req,res){
-  
+//issues index
+app.get('/issues', function (req,res){
+ db.Issue.find({}, function (err, issues){
+    res.format({
+      'text/html': function(){
+        res.render('issues/index', {issues : issues})
+      },
+      'application/json': function(){
+        res.send({issues : issues});
+      },
+      'default': function(){
+        res.status(406).send('Error. Please Try Again')
+      }
+    })
+  }); 
 });
  
-app.post('/', function (req,res){ 
+app.post('/issues', function (req,res){ 
   
 });
 
-app.get('//new', function (req,res){
-  res.render('');
-});
+// app.get('//new', function (req,res){
+//   res.render('');
+// });
 
-app.get('//:id/', function (req,res){
-    res.render('');
-  });
-});
+// app.get('//:id/', function (req,res){
+//     res.render('');
+//   });
+// });
 
-app.get('//:id/edit', function (req,res){
+// app.get('//:id/edit', function (req,res){
   
-    res.render('');
-  });
-});
+//     res.render('');
+//   });
+// });
 
-app.put('//:id', function (req,res){
+// app.put('//:id', function (req,res){
   
-    res.redirect('/');
-  });
-});
+//     res.redirect('/');
+//   });
+// });
 
-app.delete('//:id', function(req,res){
+// app.delete('//:id', function(req,res){
   
-    res.redirect('/');
-  });
-});
+//     res.redirect('/');
+//   });
+// });
 
 app.get('*', function(req,res){
   res.render('errors/404');
