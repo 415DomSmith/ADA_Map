@@ -13,6 +13,9 @@ var express = require('express'),
     gKey = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
 
 
+var issueNum = 1000;    
+
+
 
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
@@ -57,9 +60,29 @@ app.get('/issues', function (req,res){
   }); 
 });
 
-//create a new issue -- this is called from both the issues index page AND the landing page 
+//create a new issue -- this is targeted from both the issues index page AND the landing page 
 app.post('/issues', function (req,res){ 
-  })
+  var issue = new db.Issue(req.body.issue);
+  issueNum++;
+  issue.issueNum = issueNum;
+  issue.views = 0;
+  issue.votes = 1;
+  // issue.user = req.session.id;
+  issue.save(function (err, issue){
+    res.format({
+      'text/html': function(){ //This tells the express server to respond with html when the Accept header of the request is text/html and to respond with json when the Accept header of the request is application/json. 
+        res.redirect("/issues");
+      },
+      'application/json': function(){
+        res.send({issue : issue});
+      },
+      'default': function() {
+        // log the request and respond with 406
+        res.status(406).send('Not Acceptable');
+      }
+    });
+  });
+});
 
 // app.get('//new', function (req,res){
 //   res.render('');

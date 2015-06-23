@@ -12,23 +12,24 @@ body {
 
 /*BANNER*/
 #banner { 
- position: absolute;
- display: inline-block; 
- top: 0; 
- left: 0; 
- background-color: white; 
- border: 3px solid blue;
- width: 100%;
- height: 110px; 
+	position: absolute;
+	display: inline-block; 
+	top: 0; 
+	left: 0; 
+	background-color: rgb(38,129,206); 
+	width: 100%;
+	height: 70px; 
 }
 .banner-content {
- font-size: 20px;
- font-size: 2.5vw; 
- float: left;
- display: inline-block;
- margin-top: 37px;
- padding-left: 5vw;
- font-weight: bolder;
+	color: white;
+	font-size: 20px;
+	font-size: 2.5vw; 
+	float: left;
+	display: inline-block;
+	margin-top: 7px;
+	margin-bottom: 5px;
+	padding-left: 5vw;
+font-weight: bolder;
 }
 #issues {
 	float: right;
@@ -39,8 +40,8 @@ body {
 
 #photo-div{
 	margin-top: 5px;
-	margin-right: 2vw;
-	padding-right: 3vw; 
+	margin-right: 5vw;
+	padding-right: 50px; 
 	padding-left: 0vw;
 	float: right;
 	display: flex;
@@ -48,10 +49,12 @@ body {
 	border-radius: 180px;
 	background-position: center;
   overflow: hidden;
+  background-repeat: no-repeat;
   background-size: cover;
-  width: 60px;
-  height: 100px;
+  width: 30px;
+  height: 80px;
   border: black 1px solid;
+  box-shadow: 3px 3px 5px rgba(0,0,0,.5);
 }
 
 
@@ -63,15 +66,19 @@ body {
 #map-canvas {
 	position: fixed;
 	display: inline-block;
-	margin-top: 120px;
+	margin-top: 72px;
 	height: 85vh;
 	width: 60vw;
 	margin-bottom: 10px;
 }
 
 #issues-box{
+	float: right;
+	margin-top: 72px;
+	margin-right: 1vw;
 	position: relative;
 	display: inline-block;
 	border: solid 1px black;
-	width: 39vw;
+	z-index: -1;
+	width: 38vw;
 }

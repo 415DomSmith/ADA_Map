@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var issueSchema = new mongoose.Schema({
+	title: String,
 	description: String,
 	address: String,
 	lat: Number,
