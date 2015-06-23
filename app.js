@@ -84,9 +84,9 @@ app.post('/issues', function (req,res){
   });
 });
 
-// app.get('//new', function (req,res){
-//   res.render('');
-// });
+app.get('/issues/new', function (req,res){
+  res.render('issues/new');
+});
 
 // app.get('//:id/', function (req,res){
 //     res.render('');
