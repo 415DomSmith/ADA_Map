@@ -11,6 +11,7 @@ var issueSchema = new mongoose.Schema({
 	city: String,
 	views: Number,
 	votes: Number,
+	dateCreated: Date,
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'

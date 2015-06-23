@@ -84,37 +84,55 @@ app.post('/issues', function (req,res){
   });
 });
 
+//new
 app.get('/issues/new', function (req,res){
   res.render('issues/new');
 });
 
-// app.get('//:id/', function (req,res){
-//     res.render('');
-//   });
-// });
+//individual issue page with comments
+app.get('/issues/:id/', function (req,res){
+    db.Issue.findById(req.params.id).populate('comments').populate('user').exec(function (err,issue){
+    console.log(issue);
+    res.render("issues/show", {issue : issue});
+  });
+});
 
-// app.get('//:id/edit', function (req,res){
-  
-//     res.render('');
-//   });
-// });
+//issue edit page
+app.get('/issues/:id/edit', function (req,res){
+  db.Issue.findById(req.params.id, function (err,issue){
+    res.render("issues/edit", {issue : issue});
+  });
+});
 
-// app.put('//:id', function (req,res){
-  
-//     res.redirect('/');
-//   });
-// });
+//issue update
+app.put('/issues/:id', function (req,res){
+  db.Issue.findByIdAndUpdate(req.params.id, req.body.issue, function (err,issue){
+    res.redirect('/issues');
+  });
+});
 
-// app.delete('//:id', function(req,res){
-  
-//     res.redirect('/');
-//   });
-// });
+//issue delete
+app.delete('/issues/:id', function (req,res){
+  db.Issue.findByIdAndRemove(req.params.id, function (err,issue){  
+    res.redirect('/issues');
+  });
+});
 
+
+
+//-----comments-----//
+
+
+
+
+
+
+//catch all
 app.get('*', function(req,res){
   res.render('errors/404');
 });
 
+//server start
 app.listen(3000, function(){
   console.log("Server is listening on port 3000");
 });

@@ -88,29 +88,3 @@ body {
   border: black 1px solid;
   box-shadow: 3px 3px 5px rgba(0,0,0,.5);
 }
-
-
-/*BODY*/
-
-#main-content { 
-}
-
-#map-canvas {
-	position: fixed;
-	display: inline-block;
-	margin-top: 72px;
-	height: 85vh;
-	width: 60vw;
-	margin-bottom: 10px;
-}
-
-#issues-box{
-	float: right;
-	margin-top: 72px;
-	margin-right: 1vw;
-	position: relative;
-	display: inline-block;
-	border: solid 1px black;
-	z-index: -1;
-	width: 38vw;
-}
