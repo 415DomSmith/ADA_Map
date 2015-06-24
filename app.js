@@ -10,7 +10,8 @@ var express = require('express'),
     loginMiddleware = require("./middleware/loginHelper"),
     routeMiddleware = require("./middleware/routeHelper"),
 
-    gKey = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
+    gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
+
 
 
 var issueNum = 1000;    
@@ -62,26 +63,51 @@ app.get('/issues', function (req,res){
 
 //create a new issue -- this is targeted from both the issues index page AND the landing page 
 app.post('/issues', function (req,res){ 
-  var issue = new db.Issue(req.body.issue);
-  issueNum++;
-  issue.issueNum = issueNum;
-  issue.views = 0;
-  issue.votes = 1;
-  // issue.user = req.session.id;
-  issue.save(function (err, issue){
-    res.format({
-      'text/html': function(){ //This tells the express server to respond with html when the Accept header of the request is text/html and to respond with json when the Accept header of the request is application/json. 
-        res.redirect("/issues");
-      },
-      'application/json': function(){
-        res.send({issue : issue});
-      },
-      'default': function() {
-        // log the request and respond with 406
-        res.status(406).send('Not Acceptable');
-      }
-    });
-  });
+  if (req.body.issue.address === '' || req.body.issue.title === '') {
+    res.send('Address and Title fields must be completed')
+  } else {
+    var address = encodeURIComponent(req.body.issue.address);
+    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+      request.get(url + address + gk, function (error, response, resBody){
+        if (error || JSON.parse(resBody).status === 'ZERO_RESULTS'){
+          console.log(error);
+          res.send('Address not found, please re-structure the address search and try again')
+        } else if (!error && response.statusCode === 200){
+          results = JSON.parse(resBody);
+            if (results.results[0].formatted_address === null){
+              var address = 'Address unknown';
+            } else {
+              var address = results.results[0].formatted_address;
+            }
+          var lat = results.results[0].geometry.location.lat;
+          var long = results.results[0].geometry.location.lng;
+          
+          var issue = new db.Issue(req.body.issue);
+          issueNum++;
+          issue.lat = lat;
+          issue.long = long;
+          issue.address = address;
+          issue.issueNum = issueNum;
+          issue.views = 0;
+          issue.votes = 1;
+       // issue.user = req.session.id;
+
+          issue.save(function (err, issue){
+            res.format({
+              'text/html': function(){ 
+                res.redirect("/issues");
+              },
+              'application/json': function(){
+                res.send({issue : issue});
+              },
+              'default': function() {
+                res.status(406).send('Not Accepted');
+              }
+            })  
+          })
+        } 
+      })
+  }         
 });
 
 //new
@@ -120,7 +146,7 @@ app.delete('/issues/:id', function (req,res){
 
 
 
-//-----comments-----//
+//-----comments----- STRETCH GOAL//
 
 
 

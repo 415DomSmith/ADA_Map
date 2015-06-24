@@ -2,7 +2,7 @@
 
 <div id="banner"> 
 	<a href="/">
-		<img src="assets/logo146.png" id="logo-banner" alt="ADAmap">
+		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
 	</a>
 	<a href="/" class="banner-content"> About</a>
 	<a href="/" class="banner-content"> Learn</a>
@@ -17,36 +17,42 @@
 
 <div id="main-content">
 
-	<div id="map-canvas"></div>
+	<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
 
 	<div id="issues-box">
-		<thead>
-			<tr>
-				<th> Top Issues </th>
-			</tr>
-		</thead>
-		<tbody id='tbody'>
-			<% issues.forEach(function(issue){ %>
-			<tr>
-				<td> 
-					<div class="issueBox-num"> AdaMap# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Top Issues</th>
+					<th> </th>
+					<th> </th>	
+				</tr>
+			</thead>
+			<tbody id='tbody'>
+				<% issues.forEach(function(issue){ %>
+				<tr>
+					<td class="issueBox-col1"> 
+						<div class="issueBox-num"> Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-					<div class="issueBox-img"><img src="<%= issue.image %>" style="width:40px; length:40px;"  alt="/assets/noImg.jpg"></div>
+						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"> <img src="<%= issue.image %>" style="width:11vw; height:12vh;" onerror="this.src='/assets/noImg.jpg'"> </a></div>
 
-					<div> <%= issue.city%> </div>
-				</td>
-				<td> 
-					<div class="issueBox-title"> <%= issue.title %> </div>
-					<div class="issueBox-user"> <%= issue.user %> </div>
-				</td>
-				<td> <div class="issueBox-votes"> <%= issue.votes %> </div>
-						 <div class="issueBox-voteIcon"> Vote-Icon</div>
-						 <div class="isseBox-views"> <%= issue.views %> </div>
-				</td>
-		
-			</tr>
-			<% }) %>
-		</tbody>
+						<div> <%= issue.city%> </div>
+					</td>
+					<td class="issueBox-col2"> 
+						<div class="issueBox-title"> <%= issue.title %> </div>
+						<div class="issueBox-user"> <a href=" "><%= issue.user %> username</a> </div>
+						<div class="issueBox-date"> date<%= issue.dateCreated %></div>
+					</td>
+					<td class="issueBox-col3"> 
+						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<div class="isseBox-views"> views: <%= issue.views %> </div>
+					</td>
+			
+				</tr>
+				<% }) %>
+			</tbody>
+		</table>	
 	</div>
 
 

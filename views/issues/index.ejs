@@ -2,7 +2,7 @@
 
 <div id="banner"> 
 	<a href="/">
-		<img src="assets/logo146.png" id="logo-banner" alt="ADAmap">
+		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
 	</a>
 	<a href="/" class="banner-content"> About</a>
 	<a href="/" class="banner-content"> Learn</a>
@@ -11,17 +11,89 @@
 	</a>
 	<a href="/" class="banner-content" id="banner-login"> Login</a>
 	<a href="/" class="banner-content" id="banner-logout"> Logout</a>
-	<a href="/" class="banner-content" id="banner-issues"> Issues</a>
+	<a href="/" class="banner-content" id="banner-issues"> Map</a>
 
 </div>
 
 <div id="main-content">
 
+<a href="/issues/new"> Create a New Issue</a>
+
+	<div id="issues-box-left">
+		<table class="table">
+			<thead>
+				<tr>
+					<th> Recent Issues </th>
+					<th> </th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody id='tbody'>
+				<% issues.forEach(function(issue){ %>
+				<tr>
+					<td class="issueBox-col1"> 
+						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+
+						<div class="issueBox-img"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></div>
+
+						<div> <%= issue.city%> </div>
+					</td>
+					<td class="issueBox-col2"> 
+						<div class="issueBox-title"> <%= issue.title %> </div>
+						<div class="issueBox-user"> <a href=" "><%= issue.user %> username</a> </div>
+						<div class="issueBox-date"> date<%= issue.dateCreated %></div>
+					</td>
+					<td class="issueBox-col3"> 
+						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<div class="isseBox-views"> views: <%= issue.views %> </div>
+					</td>
+			
+				</tr>
+				<% }) %>
+			</tbody>
+		</table>	
+	</div>
+
+	<div id="issues-box-right">
+		<table class="table">
+			<thead>
+				<tr>
+					<th> Top Issues </th>
+					<th> </th>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody id='tbody'>
+				<% issues.forEach(function(issue){ %>
+				<tr>
+					<td class="issueBox-col1"> 
+						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+
+						<div class="issueBox-img"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></div>
+
+						<div> <%= issue.city%> </div>
+					</td>
+					<td class="issueBox-col2"> 
+						<div class="issueBox-title"> <%= issue.title %> </div>
+						<div class="issueBox-user"> <a href=" "><%= issue.user %> username</a> </div>
+						<div class="issueBox-date"> date<%= issue.dateCreated %></div>
+					</td>
+					<td class="issueBox-col3"> 
+						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<div class="isseBox-views"> views: <%= issue.views %> </div>
+					</td>
+			
+				</tr>
+				<% }) %>
+			</tbody>
+		</table>	
+	</div>
+
+
+
 </div>
-
-
-
-
 
 
 <% include ../partials/footer %>
