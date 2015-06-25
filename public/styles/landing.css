@@ -114,33 +114,34 @@ body {
 	float: left;
 	margin-top: 76px;
 	font-size: .7em;
-	width: 7vw;
+	width: 70px;
 	height: 22px;
-	margin-left: 6%;
+	margin-left: 10%;
 }
+
 
 #address-search {
 	position: absolute;
 	float: left;
 	display: inline-block;
 	margin-top: 76px;
-	margin-left: 17%;
+	margin-left: 26%;
 	height: 18px;
-	width: 10vw;
+	width: 11vw;
 
 	/*display: none;*/
 }
 
-#states {
+/*#states {
 	position: absolute;
 	float: left;
 	display: inline-block;
 	margin-top: 74px;
 	margin-left: 27.5%;
 	width: 10vw;
-	/*height: 22px;*/
+	height: 22px;
 
-}
+}*/
 
 .gm-style-iw {
     width: 350px !important;

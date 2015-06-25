@@ -8,7 +8,8 @@ $(function() {
   
 		var mapOptions = {
 	    zoom: 4,
-	    center: {lat: 39.50, lng: -98.35}
+	    center: {lat: 39.50, lng: -98.35},
+	    // mapTypeId: google.maps.MapTypeId.TERRAIN
 	   
 	  };
 
@@ -171,6 +172,7 @@ $(function() {
       var getAddress = $('#address-search').val();
       var getState = $('#states').val();
       var address = encodeURIComponent(getAddress + ', ' + getState);
+      console.log(address);
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
       var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'; //THIS IS VERY VERY BAD
 
@@ -180,7 +182,7 @@ $(function() {
         url: url + address + gk,
         dataType: 'json'
     	}).done(function (data){
-    		console.log(data);
+    		// console.log(data);
     		var lat = data.results[0].geometry.location.lat;
         var long = data.results[0].geometry.location.lng;
     		var pos = new google.maps.LatLng(lat, long);
