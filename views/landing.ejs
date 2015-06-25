@@ -16,14 +16,16 @@
 </div>
 
 <div id="main-content">
-
-	<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
+	<div id="map-controls">
+		<button id="locate-me">Find My Location <img src="/assets/mapIcons/locate.gif" alt=""></button>
+		<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
+	</div>
 
 	<div id="issues-box">
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Top Issues</th>
+					<th>Top Issues Nearby</th>
 					<th> </th>
 					<th> </th>	
 				</tr>

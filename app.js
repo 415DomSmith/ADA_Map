@@ -23,7 +23,7 @@ app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
-// app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(loginMiddleware);
 
 
@@ -88,6 +88,8 @@ app.post('/issues', function (req,res){
           issue.long = long;
           issue.address = address;
           issue.issueNum = issueNum;
+          issue.reviewed = false;
+          issue.solved = false;
           issue.views = 0;
           issue.votes = 1;
        // issue.user = req.session.id;

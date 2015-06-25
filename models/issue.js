@@ -12,6 +12,8 @@ var issueSchema = new mongoose.Schema({
 	state: String,
 	views: Number,
 	votes: Number,
+	reviewed: Boolean,
+	solved: Boolean,
 	dateCreated: {type: Date, default: Date.now},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
