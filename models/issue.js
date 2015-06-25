@@ -11,6 +11,7 @@ var issueSchema = new mongoose.Schema({
 	city: String,
 	state: String,
 	views: Number,
+	liked: [],
 	votes: Number,
 	reviewed: Boolean,
 	solved: Boolean,

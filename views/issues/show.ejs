@@ -17,7 +17,19 @@
 
 <div id="main-content">
 
-	
+	<img src="<%= issue.image%>" alt="">
+
+	<h1><%= issue.title %></h1>
+	<h2>votes: <%= issue.votes %></h2>
+	<h2>views: <%= issue.views %></h2>
+	<h3>City<%= issue.city %>, State<%= issue.state %></h3>
+	<h3> <%= issue.issueNum %> </h3>
+	<h4>Created by: <%= issue.user %> on <%= issue.dateCreated %></h4>
+	<p><%= issue.description %></p>
+
+	<p>Comment Section:</p>
+
+
 
 </div>
 

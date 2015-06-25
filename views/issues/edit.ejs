@@ -17,6 +17,37 @@
 
 <div id="main-content">
 
+	<div id="main-content">
+
+	<div id="issue-input">
+		<form action="/issues" class="form-inline" method="POST">
+			
+		
+				<input type="hidden" name="issue[image]" role="uploadcare-uploader" id="uploadcare-widget" class="form-control" name="my_file" /><label for="uploadcare"> Upload an Image of the Issue.</label>
+				
+			<div id="issue-title" class="text-box">
+			  <label for="title">Title: 
+			    <input type="text" name="issue[title]" id="title" class="form-control" autofocus>
+			  </label>
+			</div>
+
+			<div id="issue-address" class="text-box">
+			  <label for="address">Address: 
+			    <input type="text" name="issue[address]" id="address" class="form-control" autofocus>
+			  </label>
+			</div>
+
+			<div id ="issue-description" class="text-box">	
+					<label for="description">Description:</label>
+					<textarea name="issue[description]" rows="20" cols="90" id="description" class="form-control"></textarea>
+			</div>
+
+			
+
+			<input type="submit" value="Create New Issue" id="submit-button" class="form-control">
+		</form>
+	</div>
+
 </div>
 
 
