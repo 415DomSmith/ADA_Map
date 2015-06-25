@@ -1,17 +1,18 @@
 var mongoose = require('mongoose');
 
 var issueSchema = new mongoose.Schema({
-	title: String,
+	title: {type: String, required: true},
 	description: String,
-	address: String,
-	lat: Number,
-	long: Number,
+	address: {type: String, required: true},
+	lat: {type: Number, required: true},
+	long: {type: Number, required: true},
 	issueNum: Number,
 	image: String,
 	city: String,
+	state: String,
 	views: Number,
 	votes: Number,
-	dateCreated: Date,
+	dateCreated: {type: Date, default: Date.now},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'

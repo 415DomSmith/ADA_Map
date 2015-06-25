@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var wallSchema = new mongoose.Schema({
-	wallMesage: String,
+	wallMessage: String,
+	messagDate: {type: Date, default: Date.now},
 	wallActivity: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Issue'
