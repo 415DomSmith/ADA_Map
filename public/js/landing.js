@@ -1,7 +1,7 @@
 $(function() {
-  var map;
-	var mapDiv = document.getElementById('map-canvas');
-	var infowindow = new google.maps.InfoWindow(); // Global declaration of the infowindow  
+  var map,
+			mapDiv = document.getElementById('map-canvas'),
+			infowindow = new google.maps.InfoWindow(); // Global declaration of the infowindow  
 
 	//initializes map, makes an ajax call to my server to get issue locations and data
 	function initialize() {
@@ -61,6 +61,12 @@ $(function() {
     })	  
 	};
 
+	//run initialize, generate map, populate markers and infowindow data
+	//TODO - instead of loading all at once, make it load as needed
+	initialize();
+
+
+
 	//geo-locate function on button click
 	$('#locate-me').click(function(){
 		  if(navigator.geolocation) {
@@ -89,8 +95,9 @@ $(function() {
 		    // Browser doesn't support Geolocation
 		    handleNoGeolocation(false);
 		  }
-	  })
+	});
 
+	//error handling if geolocation doesn't work or is denied
 	function handleNoGeolocation(errorFlag) {
 	  if (errorFlag) {
 	    var content = 'Error: The Geolocation service failed.';
@@ -109,7 +116,7 @@ $(function() {
 	  map.setCenter(options.position);
 	}
 
-
+	//styles infowindows -- taken from http://codepen.io/Marnoto/pen/xboPmG
 	google.maps.event.addListener(infowindow, 'domready', function() {
 
     // Reference to the DIV that wraps the bottom of infowindow
@@ -157,7 +164,30 @@ $(function() {
   });
 
 
+	//TODO - code for ajax call to Google make address search bar on map work
+	//TODO - figure out how to get API key in to client side ajax call without compromising key's integrity
+	$('#form-control').submit(function (e) {
+      e.preventDefault();
+      var getAddress = $('#address-search').val();
+      var getState = $('#states').val();
+      var address = encodeURIComponent(getAddress + ', ' + getState);
+      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+      var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'; //THIS IS VERY VERY BAD
 
-	//loads map using initialize function  	
-	google.maps.event.addDomListener(window, 'load', initialize);
+      
+      $.ajax({
+        type: 'GET',
+        url: url + address + gk,
+        dataType: 'json'
+    	}).done(function (data){
+    		console.log(data);
+    		var lat = data.results[0].geometry.location.lat;
+        var long = data.results[0].geometry.location.lng;
+    		var pos = new google.maps.LatLng(lat, long);
+    		map.setCenter(pos);
+		    map.setZoom(12);
+    	});	
+  });    
+ 	
+	
 });

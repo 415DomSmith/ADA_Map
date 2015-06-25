@@ -110,11 +110,36 @@ body {
 
 #locate-me {
 	position: absolute;
-	margin-top: 80px;
+	display: inline-block;
+	float: left;
+	margin-top: 76px;
 	font-size: .7em;
-	width: 115px;
+	width: 7vw;
 	height: 22px;
-	margin-left: 10%;
+	margin-left: 6%;
+}
+
+#address-search {
+	position: absolute;
+	float: left;
+	display: inline-block;
+	margin-top: 76px;
+	margin-left: 17%;
+	height: 18px;
+	width: 10vw;
+
+	/*display: none;*/
+}
+
+#states {
+	position: absolute;
+	float: left;
+	display: inline-block;
+	margin-top: 74px;
+	margin-left: 27.5%;
+	width: 10vw;
+	/*height: 22px;*/
+
 }
 
 .gm-style-iw {
