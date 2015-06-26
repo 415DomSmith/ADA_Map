@@ -29,7 +29,7 @@ module.exports = function (passport){
   			if (err){
   				return done(err);
   			} else if (user) { // check to see if theres already a user with that email
-  				return done(null, false, req.flash('signupMessage', 'That email address is already taken'));
+  				return done(null, false, req.flash('signupMessage', 'That email address / login-ID is already taken'));
   			} else { // if there is no user with that email, create one
   				newUser.save(function(err){
   					if (err){

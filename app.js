@@ -12,18 +12,18 @@
 var express = require('express'),
     app = express(),
     passport = require('passport'),
-    flash = require('connect-flash'),
-    cookieParser = require('cookie-parser')
-    bodyParser = require('body-parser'),
-    session = ('express-session');
     db = require("./models"),
+    flash = require('connect-flash'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = ('express-session'),
     methodOverride = require("method-override"),
-    // session = require("cookie-session")
     favicon = require('serve-favicon'),
     morgan = require("morgan"),
     request = require('request');
     // loginMiddleware = require("./middleware/loginHelper"),
     // routeMiddleware = require("./middleware/routeHelper"),
+    // session = require("cookie-session"),
 
     // configDB = require('./config/database.js');
 
@@ -33,6 +33,7 @@ var express = require('express'),
 
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
+app.use(cookieParser()); // read cookies (needed for auth)
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
@@ -42,10 +43,9 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 // PASSPORT STUFF ======================
 // =====================================
 // required for passport
-// app.use(passport.session()); // persistent login sessions
-// app.use(session({ secret: 'adaboyadamap' })); // session secret
+app.use(passport.session()); // persistent login sessions
+app.use(session({ secret: 'adaboyadamap' })); // session secret
 app.use(passport.initialize());
-
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // =====================================
@@ -85,6 +85,12 @@ app.get('/signup', function (req, res){
   res.render('users/signup.ejs', { message: req.flash('signupMessage') 
     });
 });
+
+app.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/profile',
+  failureRedirect: '/signup', 
+  failureFlash: true //allow flash messages
+}));
 
 
 // =====================================
