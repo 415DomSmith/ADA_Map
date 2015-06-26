@@ -1,15 +1,8 @@
 {
-  "name": "ADAMap",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Dominic Smith",
-  "license": "ISC",
+  "name": "node-authentication",
+  "main": "server.js",
   "dependencies": {
-     "bcrypt-nodejs": "latest",
+    "bcrypt-nodejs": "latest",
     "body-parser": "~1.0.0",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",

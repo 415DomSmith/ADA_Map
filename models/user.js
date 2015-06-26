@@ -1,82 +1,56 @@
-var bcrypt = require('bcrypt');
-
-var SWF = 10;  //salt work factor
-
+// load the things we need
 var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
 
-var userSchema = new mongoose.Schema({
-	username: {
-		type: String,
-		required: true,
-		unique: true
-	},
-	password: {
-		type: String,
-		required: true
-	},
-	comments: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Comment'
-	}],
-	issues: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Issue'
-	}],
-	walls: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Wall'
-	}]
+// define the schema for our user model
+var userSchema = mongoose.Schema({
+
+    local            : {
+        email        : String,
+        password     : String
+    },
+    facebook         : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    },
+    twitter          : {
+        id           : String,
+        token        : String,
+        displayName  : String,
+        username     : String
+    },
+    google           : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+    issues: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Issue'
+    }],
+    walls: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Wall'
+    }]
+
 });
 
-userSchema.pre('save', function (next){
-	var user = this;
-	if(!user.isModified('password')){
-		return next();
-	}
-			return bcrypt.genSalt(SWF, function (err, salt){
-				if(err){
-				return next(err);
-				}
-					return bcrypt.hash(user.password, salt, function (err, hash){
-						if(err){
-							return next(err);
-						}
-								user.password = hash;
-								return next();
-					});
-			});
-});
-
-<<<<<<< HEAD
-// methods ======================
 // generating a hash
 userSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-=======
-userSchema.statics.authenticate = function (formData, callback){
-	this.findOne({
-		username: formData.username
-	}, function (err, user){
-		if (user === null){
-			callback('Invalid username or password', null);
-		} else {
-			user.checkPassword(formData.password, callback);
-		}
-	});
->>>>>>> parent of f8c113a... working on passport auth
 };
 
-userSchema.methods.checkPassword = function (password, callback){
-	var user = this;
-	bcrypt.compare(password, user.password, function (err, isMatch){
-		if (isMatch) {
-			callback(null, user);
-		} else {
-			callback(err, null);
-		}
-	});
+// checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
 };
 
-var User = mongoose.model('User', userSchema);
-
-module.exports = User;
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', userSchema);
