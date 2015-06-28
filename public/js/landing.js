@@ -18,7 +18,7 @@ $(function() {
 	  //call to server
 	  $.ajax({
         type: 'GET',
-        url: '/issues',
+        url: '/',
         dataType: 'json'
     }).done(function (data){
     	console.log(data);
@@ -199,17 +199,20 @@ $(function() {
     	});	
   });  
 
-  $('#voteUp').click(function (){
-  	var id = $(this).attr('data-id')
-  	$.ajax({
-  		type: 'PUT',
-  		url: '/issues/' + id + '/',
-  		data: {votes: { $inc: { seq: 1 } }},
-  		dataType: 'json'	
-  	}).done(function (){
-  		console.log('Incremented vote!');
-  	})
-  });
-
+	  $('#voteUp').click(function (){
+	  	$("#voteUp").attr('src', "/assets/thumbs/tuclicked.png");
+		 	var id = $(this).attr('data-id')
+		  	
+	  	$.ajax({
+	  		type: 'PUT',
+	  		url: '/issues/' + id + '/',
+	  		dataType: 'json'
+	  	}).done (function (){
+	  		
+	  	}).fail(function (err){
+	  			$( "<p>Issue voted on already!</p>" ).insertBefore( "#voteUp" );
+	  			$("#voteUp").replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">'); 		
+	  	})
+	  }); 
 	
 });

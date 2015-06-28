@@ -114,7 +114,7 @@ function isLoggedIn(req, res, next) {
             }
           },
           'application/json': function(){
-            res.send({issues:issues, dates:dates});
+            res.send({issues:issues});
           },
           'default': function(){
             res.status(406).send('Error. Please Try Again')
@@ -241,18 +241,25 @@ function isLoggedIn(req, res, next) {
         })
       },
       'application/json': function(){
-          console.log(req);
-        // db.Issue.findByIdAndUpdate(req.params.id,   function (err, issue){
-          res.redirect('/issues');
-        // })
+        db.Issue.findById(req.params.id, function (err, issue){
+          var votersArr = issue.voters; 
+          if (votersArr.indexOf(req.session.passport.user) !== -1){
+            console.log('User already voted for this issue');
+            res.status(406).send('You have already voted');
+          } else {
+            console.log('User has not voted yet!')
+            db.Issue.findByIdAndUpdate(req.params.id, {$inc: {votes:1}}, function (err, issueA){
+              db.Issue.findByIdAndUpdate(req.params.id, {$push: {voters: req.session.passport.user}}, function (err, issueB){
+                
+              })
+            })
+          }
+        })    
       },
       'default': function() {
         res.status(406).send('Not Accepted');
       }
     })  
-    // db.Issue.findByIdAndUpdate(req.params.id, function (err, issue){
-    //   res.redirect('/issues');
-    // });
   });
 
 //TODO - Same as above, make the option to delete an issue only possible by admins
@@ -268,7 +275,7 @@ function isLoggedIn(req, res, next) {
 
 // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        console.log("THIS IS REQ.USER", req.user)
+        // console.log("THIS IS REQ.USER", req.user)
         res.render('users/profile', {
             user : req.user
         });

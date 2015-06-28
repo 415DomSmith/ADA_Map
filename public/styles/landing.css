@@ -263,12 +263,15 @@ td:last-child {
 }
 
 .issueBox-col2 {
+	padding-left: 5px;
 	line-height: 20px;
-	
+	width: 280px;
 }
 
 .issueBox-col3 {
+	padding-left: 5px;
 	line-height: 20px;
+	width: 80px;
 	
 }
 
@@ -287,4 +290,9 @@ td:last-child {
 
 .issueBox-date{
 	padding-top: 5px;
+}
+
+.issueBox-votes{
+	font-weight: bold;
+	padding-bottom: 5px;
 }
