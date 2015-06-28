@@ -58,7 +58,7 @@
 					<td class="issueBox-col3"> 
 						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" id="voteUp" data-id= <%= issue._id %>></div>
+						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
 					</td>
 			
