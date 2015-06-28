@@ -61,7 +61,7 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/');
+    res.redirect('/login');
 }
 
 // routes ======================================================================
@@ -71,7 +71,7 @@ function isLoggedIn(req, res, next) {
 // ROOT AND LANDING PAGE ===============
 // =====================================
   app.get('/', function (req,res){
-    db.Issue.find({}).populate('user').exec(function (err, issues){
+    db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
       res.format({        
         'text/html': function(){
           if (req.session.passport.user == null){
@@ -99,8 +99,8 @@ function isLoggedIn(req, res, next) {
 // ISSUES INDEX / DATE & VOTES TABLE ===
 // =====================================
   app.get('/issues', function (req,res){
-    db.Issue.find({}).populate('user').exec(function (err, issues){
-      db.Issue.find({}).sort({dateCreated: -1}).limit(20).populate('user').exec(function (err, dates) {
+    db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
+      db.Issue.find({}).sort({dateCreated: -1}).limit(30).populate('user').exec(function (err, dates) {
         res.format({
           'text/html': function(){
             if (req.session.passport.user == null){
@@ -156,7 +156,7 @@ function isLoggedIn(req, res, next) {
             issue.reviewed = false;
             issue.solved = false;
             issue.views = 0;
-            issue.votes = 1;
+            issue.votes = 0;
             issue.user = req.user;
 
             issue.save(function (err, issue){

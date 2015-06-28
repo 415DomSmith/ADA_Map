@@ -1,7 +1,7 @@
 * {
 	margin: 0; 
 	padding: 0;
-	font-family: Calibri, sans-serif;
+	font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 
 body {
@@ -190,6 +190,7 @@ td:last-child {
 }
 
 .issueBox-col3 {
+	width: 80px;
 	line-height: 20px;
 	
 }
@@ -205,6 +206,10 @@ td:last-child {
 .issueBox-user {
 	margin-top: 15px;
 	padding-top: 10px;
+}
+
+.issueBox-votes {
+	font-weight: bold;
 }
 
 .issueBox-date{

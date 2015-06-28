@@ -16,7 +16,6 @@
 	<% } else { %>
 		<a href="/logout" class="banner-content" id="banner-logout"> Logout</a>
 	<% } %>
-	<a href="/" class="banner-content" id="banner-issues"> Map</a>
 
 </div>
 
@@ -46,14 +45,14 @@
 					<td class="issueBox-col2"> 
 						<div class="issueBox-title"> <%= issue.title %> </div>
 						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
-						<div class="issueBox-date"> <%= issue.dateCreated %></div>
+						<div class="issueBox-date"> Created on: <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
 						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
-						<div class="isseBox-views"> views: <%= issue.views %> </div>
+					
 					</td>
 			
 				</tr>
@@ -84,14 +83,14 @@
 					<td class="issueBox-col2"> 
 						<div class="issueBox-title"> <%= issue.title %> </div>
 						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
-						<div class="issueBox-date"> <%= issue.dateCreated %></div>
+						<div class="issueBox-date"> Created on: <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
 						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
-						<div class="isseBox-views"> views: <%= issue.views %> </div>
+				
 					</td>
 			
 				</tr>

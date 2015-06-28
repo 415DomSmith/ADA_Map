@@ -48,7 +48,7 @@ $(function() {
 												'<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
 												'<p>'+ issue.description +'</p>' + 
 												'<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
-												'<p>Votes:' + issue.votes + '</p>'+
+												'<p>Votes: ' + issue.votes + '</p>'+
 												'<p>Created on: ' + issue.dateCreated + '</p>'+
 												'</div>' +
 												'<div class="iw-bottom-gradient"></div>' +

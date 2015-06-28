@@ -1,7 +1,7 @@
 * {
 	margin: 0; 
 	padding: 0;
-	font-family: Calibri, sans-serif;
+	font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
 }
 	
 
@@ -281,6 +281,15 @@ td:last-child {
 
 .issueBox-num {
 	white-space: nowrap;
+	font-weight: bold;
+}
+
+.issueBox-title{
+	font-weight: bold;
+}
+
+.issueBox-city{
+	font-weight: normal;
 }
 
 .issueBox-user {
