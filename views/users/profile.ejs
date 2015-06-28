@@ -1,0 +1,52 @@
+<% include ../partials/header %>
+
+<div id="banner"> 
+	<a href="/">
+		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
+	</a>
+	<a href="/" class="banner-content"> About</a>
+	<a href="/" class="banner-content"> Learn</a>
+	<a href="/">
+		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
+	</a>
+		<a href="/logout" class="banner-content" id="banner-logout"> Logout</a>
+	<a href="/issues" class="banner-content" id="banner-issues"> Issues</a>
+
+</div>
+
+<div id="main-content">
+
+</div>
+
+
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+		<!-- LOCAL INFORMATION -->
+		<div class="col-sm-6">
+			<div class="well">
+				<h3><span class="fa fa-user"></span> Local</h3>
+
+					<p>
+						<strong>Username</strong>: <%= user.local.username %><br>
+						<strong>id</strong>: <%= user._id %><br>
+						<strong>email</strong>: <%= user.local.email %><br>
+						<strong>password</strong>: <%= user.local.password %>
+					</p>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+<% include ../partials/footer %>

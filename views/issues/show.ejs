@@ -6,11 +6,16 @@
 	</a>
 	<a href="/" class="banner-content"> About</a>
 	<a href="/" class="banner-content"> Learn</a>
+	<% if (currentUser !== ""){ %>
 	<a href="/">
 		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
 	</a>
-	<a href="/" class="banner-content" id="banner-login"> Login</a>
-	<a href="/" class="banner-content" id="banner-logout"> Logout</a>
+	<% } %>
+	<% if (currentUser == ""){ %>
+ 		<a href="/login" class="banner-content" id="banner-login"> Login</a>
+	<% } else { %>
+		<a href="/logout" class="banner-content" id="banner-logout"> Logout</a>
+	<% } %>
 	<a href="/issues" class="banner-content" id="banner-issues"> Issues</a>
 
 </div>

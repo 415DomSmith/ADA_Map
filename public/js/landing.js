@@ -44,10 +44,10 @@ $(function() {
   				var content = '<div id="iw-container">' +
 												'<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
 												'<div class="iw-content">' +
-												'<div class="iw-subTitle"><a href="/issues/' + issue._id +'">'+ issue.title +'</a></div>' +
+												'<div class="iw-subTitle"><a href="/issues/' + issue._id +'/">'+ issue.title +'</a></div>' +
 												'<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
-												'<p>'+ issue.description +'</p>' +
-												'<div class="iw-subTitle"> Created by: user</div>' +
+												'<p>'+ issue.description +'</p>' + 
+												'<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
 												'<p>Votes:' + issue.votes + '</p>'+
 												'<p>Created on: ' + issue.dateCreated + '</p>'+
 												'</div>' +
@@ -60,11 +60,20 @@ $(function() {
   			});  
       })
     })	  
+		
+		google.maps.event.addListener(map, 'zoom_changed', function (e){
+			
+		});
+
 	};
 
 	//run initialize, generate map, populate markers and infowindow data
-	//TODO - instead of loading all at once, make it load as needed
 	initialize();
+
+	//TODO - instead of loading all at once, make it load as needed
+
+
+
 
 
 
@@ -165,8 +174,7 @@ $(function() {
   });
 
 
-	//TODO - code for ajax call to Google make address search bar on map work
-	//TODO - figure out how to get API key in to client side ajax call without compromising key's integrity
+	//SEARCHES GOOGLE MAPS FOR ADDRESS OR LOCATION, AND ZOOMS TO THAT PLACE
 	$('#form-control').submit(function (e) {
       e.preventDefault();
       var getAddress = $('#address-search').val();
@@ -174,7 +182,7 @@ $(function() {
       var address = encodeURIComponent(getAddress + ', ' + getState);
       console.log(address);
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-      var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'; //THIS IS VERY VERY BAD
+      var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
 
       
       $.ajax({
@@ -189,7 +197,19 @@ $(function() {
     		map.setCenter(pos);
 		    map.setZoom(12);
     	});	
-  });    
- 	
+  });  
+
+  $('#voteUp').click(function (){
+  	var id = $(this).attr('data-id')
+  	$.ajax({
+  		type: 'PUT',
+  		url: '/issues/' + id + '/',
+  		data: {votes: { $inc: { seq: 1 } }},
+  		dataType: 'json'	
+  	}).done(function (){
+  		console.log('Incremented vote!');
+  	})
+  });
+
 	
 });

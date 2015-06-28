@@ -6,11 +6,16 @@
 	</a>
 	<a href="/" class="banner-content"> About</a>
 	<a href="/" class="banner-content"> Learn</a>
+	<% if (currentUser !== ""){ %>
 	<a href="/">
 		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
 	</a>
-	<a href="/" class="banner-content" id="banner-login"> Login</a>
-	<a href="/" class="banner-content" id="banner-logout"> Logout</a>
+	<% } %>
+	<% if (currentUser == ""){ %>
+ 		<a href="/login" class="banner-content" id="banner-login"> Login</a>
+	<% } else { %>
+		<a href="/logout" class="banner-content" id="banner-logout"> Logout</a>
+	<% } %>
 	<a href="/" class="banner-content" id="banner-issues"> Map</a>
 
 </div>
@@ -34,18 +39,20 @@
 					<td class="issueBox-col1"> 
 						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-						<div class="issueBox-img"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></div>
+						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a></div>
 
 						<div> <%= issue.city%> </div>
 					</td>
 					<td class="issueBox-col2"> 
 						<div class="issueBox-title"> <%= issue.title %> </div>
-						<div class="issueBox-user"> <a href=" "><%= issue.user %> username</a> </div>
+						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
 						<div class="issueBox-date"> <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
 						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<% if (currentUser !== ""){ %>
 						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<% } %>
 						<div class="isseBox-views"> views: <%= issue.views %> </div>
 					</td>
 			
@@ -70,18 +77,20 @@
 					<td class="issueBox-col1"> 
 						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-						<div class="issueBox-img"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></div>
+						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a>
 
 						<div> <%= issue.city%> </div>
 					</td>
 					<td class="issueBox-col2"> 
 						<div class="issueBox-title"> <%= issue.title %> </div>
-						<div class="issueBox-user"> <a href=" "><%= issue.user %> username</a> </div>
+						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
 						<div class="issueBox-date"> <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
 						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<% if (currentUser !== ""){ %>
 						<div class="issueBox-voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!"></div>
+						<% } %>
 						<div class="isseBox-views"> views: <%= issue.views %> </div>
 					</td>
 			

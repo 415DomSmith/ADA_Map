@@ -25,6 +25,7 @@ module.exports = function(passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
+        console.log(id);
         User.findById(id, function(err, user) {
             done(err, user);
         });
@@ -85,7 +86,7 @@ module.exports = function(passport) {
                 User.findOne({ 'local.email' :  email }, function(err, user) {
                     // if there are any errors, return the error
                     if (err)
-                        return done(err);
+                        return (err);
 
                     // check to see if theres already a user with that email
                     if (user) {
@@ -96,6 +97,7 @@ module.exports = function(passport) {
                         var newUser            = new User();
 
                         newUser.local.email    = email;
+                        newUser.local.username    = req.body.username;
                         newUser.local.password = newUser.generateHash(password);
 
                         newUser.save(function(err) {
@@ -120,6 +122,7 @@ module.exports = function(passport) {
                         // Using 'loginMessage instead of signupMessage because it's used by /connect/local'
                     } else {
                         var user = req.user;
+                        // user.local.username = username;
                         user.local.email = email;
                         user.local.password = user.generateHash(password);
                         user.save(function (err) {

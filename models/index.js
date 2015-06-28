@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/ADA_Map');
-mongoose.set('debug', true);
+mongoose.connect('mongodb://localhost/ADAmap');
+// mongoose.set('debug', true);
+
 
 module.exports.User = require('./user');
 module.exports.Issue = require('./issue');

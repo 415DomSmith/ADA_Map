@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+
+
 var issueSchema = new mongoose.Schema({
 	title: {type: String, required: true},
 	description: String,
@@ -12,6 +14,7 @@ var issueSchema = new mongoose.Schema({
 	state: String,
 	views: Number,
 	votes: Number,
+	voters: [],
 	reviewed: Boolean,
 	solved: Boolean,
 	dateCreated: {type: Date, default: Date.now},

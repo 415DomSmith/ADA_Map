@@ -35,7 +35,7 @@ var request 		 = require('request');
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up express application
-app.use(morgan('dev')); 
+app.use(morgan('tiny')); 
 app.use(cookieParser()); // read cookies (needed for auth)
 // app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,6 +49,20 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+// =====================================
+// RANDO STUFF =========================
+// =====================================
+
+var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'
+var issueNum = 1000;
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/');
+}
 
 // routes ======================================================================
 
@@ -57,10 +71,19 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // ROOT AND LANDING PAGE ===============
 // =====================================
   app.get('/', function (req,res){
-    db.Issue.find({}, function (err, issues){
-      res.format({
+    db.Issue.find({}).populate('user').exec(function (err, issues){
+      res.format({        
         'text/html': function(){
-          res.render('landing', {issues : issues})
+          if (req.session.passport.user == null){
+            // console.log('NO ONE LOGGED IN');
+            res.render('landing', {issues : issues, currentUser: ""})
+          } else {
+            // console.log(req.session.passport.user + " IS LOGGED IN"); 
+            db.User.findById(req.session.passport.user, function (err, user){
+              res.render('landing', {issues : issues, currentUser: user.local.username});
+            })
+            
+          }
         },
         'application/json': function(){
           res.send({issues : issues});
@@ -76,11 +99,19 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // ISSUES INDEX / DATE & VOTES TABLE ===
 // =====================================
   app.get('/issues', function (req,res){
-    db.Issue.find({}, function (err, issues){
-      db.Issue.find({}).sort({'date': -1}).limit(30).exec(function (err, dates) {
+    db.Issue.find({}).populate('user').exec(function (err, issues){
+      db.Issue.find({}).sort({dateCreated: -1}).limit(20).populate('user').exec(function (err, dates) {
         res.format({
           'text/html': function(){
-            res.render('issues/index', {issues:issues, dates:dates})
+            if (req.session.passport.user == null){
+              console.log('NO ONE LOGGED IN');
+              res.render('issues/index', {issues : issues, dates : dates, currentUser: ""})
+            } else {
+              console.log(req.session.passport.user + " IS LOGGED IN"); 
+              db.User.findById(req.session.passport.user, function (err, user){
+                res.render('issues/index', {issues : issues, dates : dates, currentUser: user.local.username});
+              })     
+            }
           },
           'application/json': function(){
             res.send({issues:issues, dates:dates});
@@ -97,7 +128,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // =====================================
 // CREATE ISSUE ========================
 // =====================================
-  app.post('/issues', function (req,res){ 
+  app.post('/issues', isLoggedIn, function (req,res){ 
     if (req.body.issue.address === '' || req.body.issue.title === '') {
       res.send('Address and Title fields must be completed')
     } else {
@@ -116,7 +147,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
               }
             var lat = results.results[0].geometry.location.lat;
             var long = results.results[0].geometry.location.lng;
-            
             var issue = new db.Issue(req.body.issue);
             issueNum++;
             issue.lat = lat;
@@ -127,7 +157,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
             issue.solved = false;
             issue.views = 0;
             issue.votes = 1;
-         // issue.user = req.session.id;
+            issue.user = req.user;
 
             issue.save(function (err, issue){
               res.format({
@@ -151,8 +181,16 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // =====================================
 // NEW ISSUE PAGE ======================
 // =====================================
-  app.get('/issues/new', function (req,res){
-    res.render('issues/new');
+  app.get('/issues/new', isLoggedIn, function (req,res){
+    if (req.session.passport.user == null){
+              console.log('NO ONE LOGGED IN');
+              res.render('issues/new', {currentUser: ""})
+            } else {
+              console.log(req.session.passport.user + " IS LOGGED IN"); 
+              db.User.findById(req.session.passport.user, function (err, user){
+                res.render('issues/new', {currentUser: user.local.username});
+              })     
+            }
   });
 
 //TODO - Clean up issue show EJS. Make it pretty.
@@ -161,18 +199,33 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // =====================================
   app.get('/issues/:id/', function (req,res){
       db.Issue.findById(req.params.id).populate('comments').populate('user').exec(function (err,issue){
-      console.log(issue);
-      res.render("issues/show", {issue : issue});
-    });
+        if (req.session.passport.user == null){
+          console.log('NO ONE LOGGED IN');
+          res.render('issues/show', {issue : issue, currentUser: ""})
+        } else {
+          console.log(req.session.passport.user + " IS LOGGED IN"); 
+          db.User.findById(req.session.passport.user, function (err, user){
+          res.render('issues/show', {issue : issue, currentUser: user.local.username});
+          })     
+        }
+      });
   });
 
 //TODO - Clean up edit page. Make it functional, keep in mind what user's should be able to edit and what they shouldn't.
 // =====================================
 // ISSUE EDIT PAGE =====================
 // =====================================
-  app.get('/issues/:id/edit', function (req,res){
+  app.get('/issues/:id/edit', isLoggedIn, function (req,res){
     db.Issue.findById(req.params.id, function (err,issue){
-      res.render("issues/edit", {issue : issue});
+      if (req.session.passport.user == null){
+          console.log('NO ONE LOGGED IN');
+          res.render('/issues/:id/edit', {issue : issue, currentUser: ""})
+        } else {
+          console.log(req.session.passport.user + " IS LOGGED IN"); 
+          db.User.findById(req.session.passport.user, function (err, user){
+          res.render('/issues/:id/edit', {issue : issue, currentUser: user.local.username});
+          })     
+        }
     });
   });
 
@@ -180,17 +233,33 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // =====================================
 // ISSUE UPDATE ROUTE ==================
 // =====================================
-  app.put('/issues/:id', function (req,res){
-    db.Issue.findByIdAndUpdate(req.params.id, req.body.issue, function (err,issue){
-      res.redirect('/issues');
-    });
+  app.put('/issues/:id', isLoggedIn, function (req,res){
+    res.format({
+      'text/html': function(){ 
+        db.Issue.findByIdAndUpdate(req.params.id, req.body.issue, function (err,issue){
+        res.redirect('/issues');
+        })
+      },
+      'application/json': function(){
+          console.log(req);
+        // db.Issue.findByIdAndUpdate(req.params.id,   function (err, issue){
+          res.redirect('/issues');
+        // })
+      },
+      'default': function() {
+        res.status(406).send('Not Accepted');
+      }
+    })  
+    // db.Issue.findByIdAndUpdate(req.params.id, function (err, issue){
+    //   res.redirect('/issues');
+    // });
   });
 
 //TODO - Same as above, make the option to delete an issue only possible by admins
 // =====================================
 // ISSUE DELETE ROUTE ==================
 // =====================================
-  app.delete('/issues/:id', function (req,res){
+  app.delete('/issues/:id', isLoggedIn, function (req,res){
     db.Issue.findByIdAndRemove(req.params.id, function (err,issue){  
       res.redirect('/issues');
     });
@@ -199,7 +268,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
+        console.log("THIS IS REQ.USER", req.user)
+        res.render('users/profile', {
             user : req.user
         });
     });
@@ -218,7 +288,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
         // LOGIN ===============================
         // show the login form
         app.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
+            res.render('users/login', { message: req.flash('loginMessage') });
         });
 
         // process the login form
@@ -231,15 +301,16 @@ app.use(flash()); // use connect-flash for flash messages stored in session
         // SIGNUP =================================
         // show the signup form
         app.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
+            res.render('users/signup', { message: req.flash('signupMessage') });
         });
 
         // process the signup form
         app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
-        }));
+          }), function(req,res){
+          res.redirect("/profile")
+        });
 
     // facebook -------------------------------
 
@@ -388,13 +459,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
   });    
 
 
-// route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-
-    res.redirect('/');
-}
 
 
 // launch ======================================================================
