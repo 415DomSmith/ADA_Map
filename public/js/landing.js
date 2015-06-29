@@ -79,24 +79,79 @@ $(function() {
       var sw = bounds.getSouthWest(); // LatLng of the south-west corner
       var NE = [ne.lng(), ne.lat()]; //format for mongo geoQuery [long,lat]
       var SW = [sw.lng(), sw.lat()];
-      var box = [SW, NE];
-    // console.log('THE CURRENT VIEWPORTS BOUNDS ARE: ' + bounds);
-    // console.log(box);
+      var box =  {
+        NE: NE,
+        SW: SW
+      } 
+      // console.log(box);    
+      //Make AJAX request, send box of bounds to 
         $.ajax({
           type: 'GET',
           url: '/',
-          contentType: 'application/json',
-          // dataType: 'json',
-          data: JSON.stringify(box)
+          // contentType: 'json',
+          dataType: 'json',
+          data: box
         }).done (function (res){
           console.log(res);
-        })   
-			
+          var issues = res;
+          $("#tbody").html(" ");
+
+          issues.forEach(function (issue){
+            var tableContent = 
+              '<tr>' +
+              '<td class="issueBox-col1">' + 
+              '<div class="issueBox-num"> Issue# <a href="/issues/' + issue._id + '/">' + issue.issueNum + '</a> <div>' +
+              '<div class="issueBox-img"><a href="/issues/' + issue._id + '/">';
+              
+              if (!issue.image || issue.image == ""){
+                tableContent+= '<img src="/assets/noImg.jpg" style="width:11vw; height:12vh;"> </a></div>';
+              } else {
+                tableContent+= '<img src="'+ issue.image + '" style="width:11vw; height:12vh;"> </a></div>' ;
+              }
+              tableContent+=
+              '<div class="issueBox-city">' + issue.city + '</div></td>' +
+              '<td class="issueBox-col2">' + 
+              '<div class="issueBox-title">' + issue.title + '</div>' +
+              '<div class="issueBox-user"> Created by: <a href=" ">' + issue.user.local.username + '</a></div>' +
+              '<div class="issueBox-date">' + issue.dateCreated + '</div></td>' +
+              '<td class="issueBox-col3">' + 
+              '<div class="issueBox-votes"> votes:' + issue.votes + '</div>';
+              if (document.cookie) {
+              tableContent += '<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id="' + issue._id + '"></div>';
+              }
+              tableContent+= '</td></tr>';
+            // console.log(issue.title);
+            $("#tbody").append(tableContent);
+          })
+
+// =====================================
+// CLIENT SIDE VOTING SYSTEM ===========
+// =====================================
+//Changes image to blue thumbs up on click, and sends AJAX put request. /issues/:id is listening for AJAX.
+//_ID in URL is stored in a data-id tag on the image. Server looks up that issue ID, and checks to see if user has voted for it already (user _ID stored in an array as part of issue schema).
+//If user ID is in array, server returns an error, which is handled by AJAX .fail callback. If user hasn't voted, thumbs stays blue. Server increments votes count, and adds user _ID to array.
+          $('.voteUp').click(function (e){
+            $(this).attr('src', "/assets/thumbs/tuclicked.png");
+            $(this).attr('class', "clicked")
+            var id = $(this).attr('data-id');
+              
+            $.ajax({
+              type: 'PUT',
+              url: '/issues/' + id + '/',
+              dataType: 'json'
+            }).done (function (){
+              
+            }).fail(function (err){
+                $( "<p>Issue voted on already!</p>" ).insertBefore('.clicked');
+                $('.clicked').replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">');    
+            })
+          });                             
+        })   			
 		});
 
-	};
+	}; //end of initialize function
 
-	//auto run initialize, generate map, populate markers and infowindow data
+	//auto run initialize, generate map, populate markers and infowindow data, create listener on map idle
 	initialize();
 
 	//TODO - instead of loading all at once, make it load as needed?
@@ -238,27 +293,6 @@ $(function() {
   });  
 
 
-// =====================================
-// CLIENT SIDE VOTING SYSTEM ===========
-// =====================================
-//Changes image to blue thumbs up on click, and sends AJAX put request. /issues/:id is listening for AJAX.
-//_ID in URL is stored in a data-id tag on the image. Server looks up that issue ID, and checks to see if user has voted for it already (user _ID stored in an array as part of issue schema).
-//If user ID is in array, server returns an error, which is handled by AJAX .fail callback. If user hasn't voted, thumbs stays blue. Server increments votes count, and adds user _ID to array.
-  $('.voteUp').click(function (e){
-  	$(this).attr('src', "/assets/thumbs/tuclicked.png");
-  	$(this).attr('class', "clicked")
-	 	var id = $(this).attr('data-id');
-	  	
-  	$.ajax({
-  		type: 'PUT',
-  		url: '/issues/' + id + '/',
-  		dataType: 'json'
-  	}).done (function (){
-  		
-  	}).fail(function (err){
-  			$( "<p>Issue voted on already!</p>" ).insertBefore('.clicked');
-  			$('.clicked').replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">'); 		
-  	})
-  }); 
+
 
 });

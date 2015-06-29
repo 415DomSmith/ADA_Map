@@ -55,16 +55,16 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // =====================================
 
 var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'
-var issueNum = 1000;
-
 
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()){
         return next();
-
-    res.redirect('/login');
+    } else {
+      res.cookie('adacook', false, {maxAge: 0})
+      res.redirect('/login');
+    }        
 }
 
 // routes ======================================================================
@@ -77,7 +77,7 @@ function isLoggedIn(req, res, next) {
       res.format({        
         'text/html': function(){
           db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
-          // console.log(req.body);
+          console.log('THIS IS FROM THE HTML/TEXT');
             if (req.session.passport.user == null){
               // console.log('NO ONE LOGGED IN');
               res.render('landing', {issues : issues, currentUser: ""})
@@ -85,24 +85,35 @@ function isLoggedIn(req, res, next) {
               // console.log(req.session.passport.user + " IS LOGGED IN"); 
               db.User.findById(req.session.passport.user, function (err, user){
                 res.render('landing', {issues : issues, currentUser: user.local.username});
-              })
-            
+              })    
             }
           }) 
-        }, //I'm getting the box array from my request. But i'm having problems using it. Every AJAX request is trigger my text/html response.
+        }, 
         'application/json': function(){
-          var box = JSON.parse(req.body);
-          db.places.find({loc : {"$geoWithin" : {$box : box}}}).exec(function (err, issues){
-            console.log(issues);
+          var box = [req.query.NE, req.query.SW] //format req.query in to box of bounds    
+          db.Issue.find({loc : {"$geoWithin" : {$box : box}}}).populate('user').limit(30).exec(function (err, issues){ //find all issues inside box of bounds
             res.send(issues)
           })
         },
         'default': function(){
           res.status(406).send('Error. Please Try Again')
         }
-      })
-    // }); 
+    })
   });
+
+// =====================================
+// ISSUES ROUTE OR WHATEVER ===============
+// =====================================
+  // app.get('/test/:issues', function (req,res){  
+  //     console.log("test", req)
+  //     var box = req.params;
+  //     // console.log(box)
+  //     // var box = [[-120.10292968750002,19.927118151214636],[-76.59707031250002,54.79766616036189]]
+  //     db.Issue.find({loc : {"$geoWithin" : {$box : box}}}).exec(function (err, issues){
+  //       // console.log(issues);
+  //       res.send(issues)
+  //     })
+  // });
 
 // =====================================
 // ISSUES INDEX / DATE & VOTES TABLE ===
@@ -137,13 +148,15 @@ function isLoggedIn(req, res, next) {
 // =====================================
 // CREATE ISSUE ========================
 // =====================================
+  var issueNum = 1000; //TODO - creat an auto-incrementing field in the data model to handle issue number
+
   app.post('/issues', isLoggedIn, function (req,res){ 
     if (req.body.issue.address === '' || req.body.issue.title === '') {
       res.send('Address and Title fields must be completed')
     } else {
-      var address = encodeURIComponent(req.body.issue.address);
+      var address = encodeURIComponent(req.body.issue.address); //gets address from user
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
-        request.get(url + address + gk, function (error, response, resBody){
+        request.get(url + address + gk, function (error, response, resBody){ //queries google for proper address format
           if (error || JSON.parse(resBody).status === 'ZERO_RESULTS'){
             console.log(error);
             res.send('Address not found, please re-structure the address search and try again')
@@ -154,14 +167,14 @@ function isLoggedIn(req, res, next) {
               } else {
                 var address = results.results[0].formatted_address;
               }
-            var lat = results.results[0].geometry.location.lat;
+            //setting issue properties  
+            var lat = results.results[0].geometry.location.lat; 
             var long = results.results[0].geometry.location.lng;
             var issue = new db.Issue(req.body.issue);
             issueNum++;
             issue.lat = lat;
             issue.long = long;
             issue.loc = [long, lat];
-            console.log('THIS IS THE LAT AND LONG ARRAY: ' + issue.loc);
             issue.address = address;
             issue.issueNum = issueNum;
             issue.reviewed = false;
@@ -298,6 +311,7 @@ function isLoggedIn(req, res, next) {
 
 // LOGOUT ==============================
     app.get('/logout', function(req, res) {
+        res.cookie('adacook', false, {maxAge: 0})
         req.logout();
         res.redirect('/');
     });
@@ -310,7 +324,9 @@ function isLoggedIn(req, res, next) {
         // LOGIN ===============================
         // show the login form
         app.get('/login', function(req, res) {
+            res.cookie('adacook', true, {maxAge: 900000})
             res.render('users/login', { message: req.flash('loginMessage') });
+
         });
 
         // process the login form
