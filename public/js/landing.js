@@ -3,44 +3,48 @@ $(function() {
 			mapDiv = document.getElementById('map-canvas'),
 			infowindow = new google.maps.InfoWindow(); // Global declaration of the infowindow  
 
-	//initializes map, makes an ajax call to my server to get issue locations and data
+
+// ===============================================
+// LOAD MAP, GET ISSUE DATA, BUILD INFO WINDOWS ==
+// ===============================================
+//initializes map, makes an ajax call to server to get issue locations and data
 	function initialize() {
   
 		var mapOptions = {
 	    zoom: 4,
 	    center: {lat: 39.50, lng: -98.35},
-	    // mapTypeId: google.maps.MapTypeId.TERRAIN
+	    // mapTypeId: google.maps.MapTypeId.TERRAIN //Terrain style map, but it doesn't show street names
 	   
 	  };
 
-	  map = new google.maps.Map(mapDiv,mapOptions);
+	  map = new google.maps.Map(mapDiv,mapOptions); //builds map in #map-canvas DIV, with the above options. Current view set to show all of US.
 
-	  //call to server
+	  //AJAX call to server for issue data
 	  $.ajax({
         type: 'GET',
         url: '/',
         dataType: 'json'
     }).done(function (data){
-    	console.log(data);
+    	// console.log(data);
     	var issues = data.issues;
     	//goes in object, loops through array in object, saves data to make a new marker
       issues.forEach(function (issue){
           
-        var lat = issue.lat;
-        var long = issue.long;
-        var title = issue.title;
+        var lat = issue.lat; //get lat from issue in DB
+        var long = issue.long; //get long from issue in DB
+        var title = issue.title; //get title from issue, so when hover over marker title appears.
 
-        var myLatlng = new google.maps.LatLng(lat,long);
+        var myLatlng = new google.maps.LatLng(lat,long); //set position of marker
 
         //making the marker. Because markers == JS objects, can set key:value pairs for anything we want to store data. Will use this data to make call out window
         var marker = new google.maps.Marker({
         	position: myLatlng,
           map: map,
-          animation: google.maps.Animation.DROP,
+          animation: google.maps.Animation.DROP, //map animation, may want to remove. Too many markers could cause lag / choppiness.
           title: title,
-          icon: '/assets/mapIcons/apin50.png'
+          icon: '/assets/mapIcons/apin50.png' //custom map marker
         })
-        google.maps.event.addListener(marker, "click", function(){  
+        google.maps.event.addListener(marker, "click", function(){  //add click listener to open info window to each marker
   				var content = '<div id="iw-container">' +
 												'<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
 												'<div class="iw-content">' +
@@ -54,33 +58,35 @@ $(function() {
 												'<div class="iw-bottom-gradient"></div>' +
 												'</div>';
 
-  				infowindow.close()  
-    			infowindow.setContent(content);  
-      		infowindow.open(map, marker);				 
+  				infowindow.close()  //close all other info windows when a new one is clicked (only one open at a time, reduce screen clutter)
+    			infowindow.setContent(content);  //populates info window with content HTML string
+      		infowindow.open(map, marker);		//opens info window	 
   			});  
       })
     })	  
 		
-		google.maps.event.addListener(map, 'zoom_changed', function (e){
+		google.maps.event.addListener(map, 'zoom_changed', function (e){ //building dynamic populating issue table next to map, so info in table is what appears on map
 			
 		});
 
 	};
 
-	//run initialize, generate map, populate markers and infowindow data
+	//auto run initialize, generate map, populate markers and infowindow data
 	initialize();
 
-	//TODO - instead of loading all at once, make it load as needed
+	//TODO - instead of loading all at once, make it load as needed?
 
 
 
 
+// ==========================================
+// GEOLOCATING USER AND MARKING LOCATION ====
+// ==========================================
 
-
-	//geo-locate function on button click
+//geo-locate function on button click
 	$('#locate-me').click(function(){
 		  if(navigator.geolocation) {
-		  	//TODO - add in a loading screen over map while location is found
+//TODO - add in a loading screen over map while location is found
 		    navigator.geolocation.getCurrentPosition(function(position) {
 		      var pos = new google.maps.LatLng(position.coords.latitude,
 		      																 position.coords.longitude);
@@ -93,9 +99,9 @@ $(function() {
 		        title: 'My Location',
 		        draggable: true,
 		        icon: '/assets/mapIcons/mepin.png'
-		      });
-		      //zoom to users location
-		      //TODO - end loading screen
+		      });     
+//TODO - end loading screen
+				//zoom to users location
 		      map.setCenter(pos);
 		      map.setZoom(17);
 		    }, function() {
@@ -107,7 +113,7 @@ $(function() {
 		  }
 	});
 
-	//error handling if geolocation doesn't work or is denied
+//error handling if geolocation doesn't work or is denied
 	function handleNoGeolocation(errorFlag) {
 	  if (errorFlag) {
 	    var content = 'Error: The Geolocation service failed.';
@@ -126,7 +132,11 @@ $(function() {
 	  map.setCenter(options.position);
 	}
 
-	//styles infowindows -- taken from http://codepen.io/Marnoto/pen/xboPmG
+
+// =====================================
+// CUSTOM / STYLED MAP INFO WINDOWS ====
+// =====================================
+//style for infowindows -- taken from http://codepen.io/Marnoto/pen/xboPmG
 	google.maps.event.addListener(infowindow, 'domready', function() {
 
     // Reference to the DIV that wraps the bottom of infowindow
@@ -173,6 +183,9 @@ $(function() {
     });
   });
 
+// =====================================
+// SEARCH BAR ON MAP ===================
+// =====================================
 
 	//SEARCHES GOOGLE MAPS FOR ADDRESS OR LOCATION, AND ZOOMS TO THAT PLACE
 	$('#form-control').submit(function (e) {
@@ -199,21 +212,28 @@ $(function() {
     	});	
   });  
 
-	  $('.voteUp').click(function (e){
-	  	$(this).attr('src', "/assets/thumbs/tuclicked.png");
-	  	$(this).attr('class', "clicked")
-		 	var id = $(this).attr('data-id');
-		  	
-	  	$.ajax({
-	  		type: 'PUT',
-	  		url: '/issues/' + id + '/',
-	  		dataType: 'json'
-	  	}).done (function (){
-	  		
-	  	}).fail(function (err){
-	  			$( "<p>Issue voted on already!</p>" ).insertBefore('.clicked');
-	  			$('.clicked').replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">'); 		
-	  	})
-	  }); 
-	
+
+// =====================================
+// CLIENT SIDE VOTING SYSTEM ===========
+// =====================================
+//Changes image to blue thumbs up on click, and sends AJAX put request. /issues/:id is listening for AJAX.
+//_ID in URL is stored in a data-id tag on the image. Server looks up that issue ID, and checks to see if user has voted for it already (user _ID stored in an array as part of issue schema).
+//If user ID is in array, server returns an error, which is handled by AJAX .fail callback. If user hasn't voted, thumbs stays blue. Server increments votes count, and adds user _ID to array.
+  $('.voteUp').click(function (e){
+  	$(this).attr('src', "/assets/thumbs/tuclicked.png");
+  	$(this).attr('class', "clicked")
+	 	var id = $(this).attr('data-id');
+	  	
+  	$.ajax({
+  		type: 'PUT',
+  		url: '/issues/' + id + '/',
+  		dataType: 'json'
+  	}).done (function (){
+  		
+  	}).fail(function (err){
+  			$( "<p>Issue voted on already!</p>" ).insertBefore('.clicked');
+  			$('.clicked').replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">'); 		
+  	})
+  }); 
+
 });

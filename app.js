@@ -177,7 +177,7 @@ function isLoggedIn(req, res, next) {
     }         
   });
 
-//TODO - Format issue new page better, maybe incorporate a map?
+//TODO - Format issue NEW page better, maybe incorporate a map?
 // =====================================
 // NEW ISSUE PAGE ======================
 // =====================================
@@ -240,7 +240,9 @@ function isLoggedIn(req, res, next) {
         res.redirect('/issues');
         })
       },
-      'application/json': function(){
+      'application/json': function(){ //listening for JSON for voting system. 
+        //Gets issue _ID, checks voters array if current user making call has already voted. 
+        //If so, respond with error. Otherwise, increment issue votes # and add user _ID to voters array.
         db.Issue.findById(req.params.id, function (err, issue){
           var votersArr = issue.voters; 
           if (votersArr.indexOf(req.session.passport.user) !== -1){
@@ -458,9 +460,9 @@ function isLoggedIn(req, res, next) {
 
 
 //TODO - Make 404 page more pretty.
-  // =====================================
-  // CATCH ALL  ==========================
-  // =====================================
+// =====================================
+// CATCH ALL  ==========================
+// =====================================
   app.get('*', function(req,res){
     res.render('errors/404');
   });    
