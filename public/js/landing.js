@@ -22,7 +22,7 @@ $(function() {
 	  //AJAX call to server for issue data
 	  $.ajax({
         type: 'GET',
-        url: '/',
+        url: '/issues',
         dataType: 'json'
     }).done(function (data){
     	// console.log(data);
@@ -64,8 +64,33 @@ $(function() {
   			});  
       })
     })	  
+
+//TODO - build dynamic populating issue table next to map, so info in table is only what appears in map view
+// =================================================================
+// GET BOUNDS ON MAP IDLE, GEOQUERY DB FOR ISSUES, POPULATE TABLE ==
+// =================================================================
+//Get bounds of map view on idle event, Query DB based on bounds
+//Clear content in table, build HTML string for each issue returned from query
+//Append issues to table body via the DOM
 		
-		google.maps.event.addListener(map, 'zoom_changed', function (e){ //building dynamic populating issue table next to map, so info in table is what appears on map
+		google.maps.event.addListener(map, 'idle', function (e){ 
+			var bounds = map.getBounds();  //get bounds of current view(NE and SW corner)
+      var ne = bounds.getNorthEast(); // LatLng of the north-east corner
+      var sw = bounds.getSouthWest(); // LatLng of the south-west corner
+      var NE = [ne.lng(), ne.lat()]; //format for mongo geoQuery [long,lat]
+      var SW = [sw.lng(), sw.lat()];
+      var box = [SW, NE];
+    // console.log('THE CURRENT VIEWPORTS BOUNDS ARE: ' + bounds);
+    // console.log(box);
+        $.ajax({
+          type: 'GET',
+          url: '/',
+          contentType: 'application/json',
+          // dataType: 'json',
+          data: JSON.stringify(box)
+        }).done (function (res){
+          console.log(res);
+        })   
 			
 		});
 

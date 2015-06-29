@@ -2,8 +2,9 @@
 // WELCOME TO ADAMAP ===================
 // =====================================
 // TODO - Look up licensing stuff to put in here
-  
 
+  
+// TODO - Make more modular... app.js is almost 500 lines of code... 
 
 // =====================================
 // DEPENDENCIES ========================
@@ -56,6 +57,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw'
 var issueNum = 1000;
 
+
+
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
@@ -70,29 +73,35 @@ function isLoggedIn(req, res, next) {
 // =====================================
 // ROOT AND LANDING PAGE ===============
 // =====================================
-  app.get('/', function (req,res){
-    db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
+  app.get('/', function (req,res){  
       res.format({        
         'text/html': function(){
-          if (req.session.passport.user == null){
-            // console.log('NO ONE LOGGED IN');
-            res.render('landing', {issues : issues, currentUser: ""})
-          } else {
-            // console.log(req.session.passport.user + " IS LOGGED IN"); 
-            db.User.findById(req.session.passport.user, function (err, user){
-              res.render('landing', {issues : issues, currentUser: user.local.username});
-            })
+          db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
+          // console.log(req.body);
+            if (req.session.passport.user == null){
+              // console.log('NO ONE LOGGED IN');
+              res.render('landing', {issues : issues, currentUser: ""})
+            } else {
+              // console.log(req.session.passport.user + " IS LOGGED IN"); 
+              db.User.findById(req.session.passport.user, function (err, user){
+                res.render('landing', {issues : issues, currentUser: user.local.username});
+              })
             
-          }
-        },
+            }
+          }) 
+        }, //I'm getting the box array from my request. But i'm having problems using it. Every AJAX request is trigger my text/html response.
         'application/json': function(){
-          res.send({issues : issues});
+          var box = JSON.parse(req.body);
+          db.places.find({loc : {"$geoWithin" : {$box : box}}}).exec(function (err, issues){
+            console.log(issues);
+            res.send(issues)
+          })
         },
         'default': function(){
           res.status(406).send('Error. Please Try Again')
         }
       })
-    }); 
+    // }); 
   });
 
 // =====================================
@@ -151,6 +160,8 @@ function isLoggedIn(req, res, next) {
             issueNum++;
             issue.lat = lat;
             issue.long = long;
+            issue.loc = [long, lat];
+            console.log('THIS IS THE LAT AND LONG ARRAY: ' + issue.loc);
             issue.address = address;
             issue.issueNum = issueNum;
             issue.reviewed = false;
@@ -162,6 +173,8 @@ function isLoggedIn(req, res, next) {
             issue.save(function (err, issue){
               res.format({
                 'text/html': function(){ 
+                  console.log('ERROR MSG: ' + err);
+                  console.log('SUCCESSFUL ISSUE: ' + issue)
                   res.redirect("/issues");
                 },
                 'application/json': function(){

@@ -45,7 +45,8 @@ var userSchema = mongoose.Schema({
     walls: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Wall'
-    }]
+    }],
+    avatar          : String, 
 
 });
 
