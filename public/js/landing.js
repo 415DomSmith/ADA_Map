@@ -204,6 +204,7 @@ $(function() {
 
 //geo-locate function on button click
 	$('#locate-me').click(function(){
+     $('#loader-container').show(); 
 		  if(navigator.geolocation) {
 //TODO - add in a loading screen over map while location is found
 		    navigator.geolocation.getCurrentPosition(function(position) {
@@ -223,6 +224,7 @@ $(function() {
 				//zoom to users location
 		      map.setCenter(pos);
 		      map.setZoom(17);
+          $('#loader-container').hide();
 		    }, function() {
 		      handleNoGeolocation(true);
 		    });

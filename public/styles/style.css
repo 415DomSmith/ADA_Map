@@ -31,9 +31,43 @@ body {
 	display: inline-block;
 	margin-top: 17px;
 	margin-bottom: 5px;
-	padding-left: 5vw;
+	margin-left: 5vw;
+	/*padding-left: 5vw;*/
 	font-weight: bolder;
 	text-decoration: none;
+}
+
+.hvr-underline-from-center {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+}
+.hvr-underline-from-center:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  background: #2098d1;
+  height: 4px;
+  -webkit-transition-property: left, right;
+  transition-property: left, right;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
+  left: 0;
+  right: 0;
 }
 
 #logo-banner {
@@ -65,13 +99,13 @@ body {
 
 }
 
-#banner-issues {
+/*#banner-issues {
 	float: right;
 	display: inline-block;
 	padding-right: 3vw;
 	padding-left: 3vw;
 } 
-
+*/
 #photo-div{
 	margin-top: 5px;
 	margin-right: 5vw;
@@ -158,7 +192,7 @@ body {
   font-size: 15px;
   padding: 10px 20px 10px 20px;
   text-decoration: none;
-  margin-left: 25%;
+  margin-left: 13%;
 }
 
 .issBtn:hover {
@@ -285,4 +319,53 @@ td:last-child {
 
 .issueBox-date{
 	padding-top: 5px;
+}
+
+
+/*LOGIN PAGE*/
+
+.login-container {
+
+margin-left: 40vw;
+margin-top: -25px;
+}
+
+.form-group {
+	font-weight: bold;
+	padding-bottom: 5px;
+}
+
+.loginBtn {
+
+	margin-left: 220px;
+	margin-top: -170px;
+}
+
+#login-codeArt{
+	margin-top: 30px;
+	width: 20vw;
+	height: 20vl;
+}
+
+/*PROFILE PAGE*/
+
+#profile-issues-box{
+	margin-top: 20px;
+	margin-left: 25vw;
+	margin-top: 0px;
+	float: left;
+	width: 47vw;
+	height: 80vh;
+	overflow: auto;	
+	display: inline;
+
+}
+
+.well {
+	margin-top: 40px;
+	margin-left: 40px;
+}
+
+.prof {
+	margin-left: 10px;
 }

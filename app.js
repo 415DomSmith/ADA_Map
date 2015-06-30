@@ -303,10 +303,10 @@ function isLoggedIn(req, res, next) {
 
 // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        // console.log("THIS IS REQ.USER", req.user)
-        res.render('users/profile', {
-            user : req.user
-        });
+      db.Issue.find({user : req.user}).populate('comments').sort({dateCreated: -1}).exec(function (err,issues){  
+        // console.log(issue)
+        res.render('users/profile', {user : req.user, issues : issues});
+      }) 
     });
 
 // LOGOUT ==============================

@@ -29,10 +29,44 @@ body {
 	display: flex;
 	display: inline-block;
 	margin-top: 17px;
+	margin-left: 5vw;
 	margin-bottom: 5px;
-	padding-left: 5vw;
+/*	padding-left: 5vw;*/
 	font-weight: bolder;
 	text-decoration: none;
+}
+
+.hvr-underline-from-center {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow: hidden;
+}
+.hvr-underline-from-center:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  right: 50%;
+  bottom: 0;
+  background: #2098d1;
+  height: 4px;
+  -webkit-transition-property: left, right;
+  transition-property: left, right;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
+  left: 0;
+  right: 0;
 }
 
 #logo-banner {
@@ -64,12 +98,12 @@ body {
 
 }
 
-#banner-issues {
-	float: right;
+/*#banner-issues {
+	float: left;
 	display: inline-block;
 	padding-right: 3vw;
 	padding-left: 3vw;
-} 
+} */
 
 #photo-div{
 	margin-top: 5px;
@@ -106,6 +140,59 @@ body {
 	width: 60vw;
 	margin-bottom: 10px;
 	z-index: -1;
+}
+
+#loader-container {
+	background-color: rgba(38,129,206,0.7); 
+  width: 200px;
+  height: 200px;
+  color: white;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid #3498db;
+  border-radius: 50%;
+  -webkit-animation: borderScale 1s infinite ease-in-out;
+  animation: borderScale 1s infinite ease-in-out;
+  z-index: 2;
+  display: none;
+}
+
+#loadingText {
+  font-weight: bold;
+  font-size: 2em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+@-webkit-keyframes borderScale {
+  0% {
+    border: 5px solid white;
+  }
+  50% {
+    border: 25px solid #3498db;
+  }
+  100% {
+    border: 5px solid white;
+  }
+}
+
+@keyframes borderScale {
+  0% {
+    border: 5px solid white;
+  }
+  50% {
+    border: 25px solid #3498db;
+  }
+  100% {
+    border: 5px solid white;
+  }
 }
 
 #locate-me {
@@ -330,3 +417,5 @@ td:last-child {
 	font-weight: bold;
 	padding-bottom: 5px;
 }
+
+
