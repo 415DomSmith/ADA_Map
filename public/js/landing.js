@@ -20,52 +20,7 @@ $(function() {
 
 	  map = new google.maps.Map(mapDiv,mapOptions); //builds map in #map-canvas DIV, with the above options. Current view set to show all of US.
 
-   
-	  //AJAX call to server for issue data
-	  // $.ajax({
-   //      type: 'GET',
-   //      url: '/issues',
-   //      dataType: 'json'
-   //  }).done(function (data){
-   //  	// console.log(data);
-   //  	var issues = data.issues;
-   //  	//goes in object, loops through array in object, saves data to make a new marker
-   //    issues.forEach(function (issue){
-          
-   //      var lat = issue.lat; //get lat from issue in DB
-   //      var long = issue.long; //get long from issue in DB
-   //      var title = issue.title; //get title from issue, so when hover over marker title appears.
-
-   //      var myLatlng = new google.maps.LatLng(lat,long); //set position of marker
-
-   //      //making the marker. Because markers == JS objects, can set key:value pairs for anything we want to store data. Will use this data to make call out window
-   //      var marker = new google.maps.Marker({
-   //      	position: myLatlng,
-   //        map: map,
-   //        animation: google.maps.Animation.DROP, //map animation, may want to remove. Too many markers could cause lag / choppiness.
-   //        title: title,
-   //        icon: '/assets/mapIcons/apin50.png' //custom map marker
-   //      })
-   //      google.maps.event.addListener(marker, "click", function(){  //add click listener to open info window to each marker
-  	// 			var content = '<div id="iw-container">' +
-			// 									'<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
-			// 									'<div class="iw-content">' +
-			// 									'<div class="iw-subTitle"><a href="/issues/' + issue._id +'/">'+ issue.title +'</a></div>' +
-			// 									'<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
-			// 									'<p>'+ issue.description +'</p>' + 
-			// 									'<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
-			// 									'<p>Votes: ' + issue.votes + '</p>'+
-			// 									'<p>Created on: ' + issue.dateCreated + '</p>'+
-			// 									'</div>' +
-			// 									'<div class="iw-bottom-gradient"></div>' +
-			// 									'</div>';
-
-  	// 			infowindow.close()  //close all other info windows when a new one is clicked (only one open at a time, reduce screen clutter)
-   //  			infowindow.setContent(content);  //populates info window with content HTML string
-   //    		infowindow.open(map, marker);		//opens info window	 
-  	// 		});  
-   //    })
-   //  })	  
+     
 
 // =================================================================
 // GET BOUNDS ON MAP IDLE, GEOQUERY DB FOR ISSUES, POPULATE TABLE ==
@@ -92,7 +47,7 @@ $(function() {
           dataType: 'json',
           data: box
         }).done (function (res){
-          console.log(res);
+          // console.log(res);
           var issues = res;
 
           issues.forEach(function (issue){
@@ -206,7 +161,6 @@ $(function() {
 	$('#locate-me').click(function(){
      $('#loader-container').show(); 
 		  if(navigator.geolocation) {
-//TODO - add in a loading screen over map while location is found
 		    navigator.geolocation.getCurrentPosition(function(position) {
 		      var pos = new google.maps.LatLng(position.coords.latitude,
 		      																 position.coords.longitude);
@@ -220,7 +174,6 @@ $(function() {
 		        draggable: true,
 		        icon: '/assets/mapIcons/mepin.png'
 		      });     
-//TODO - end loading screen
 				//zoom to users location
 		      map.setCenter(pos);
 		      map.setZoom(17);
@@ -314,7 +267,7 @@ $(function() {
       var getAddress = $('#address-search').val();
       var getState = $('#states').val();
       var address = encodeURIComponent(getAddress + ', ' + getState);
-      console.log(address);
+      // console.log(address);
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
       var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
 

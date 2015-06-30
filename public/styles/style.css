@@ -369,3 +369,17 @@ margin-top: -25px;
 .prof {
 	margin-left: 10px;
 }
+
+
+/*ERROR*/
+
+#error-codeArt {
+	margin-top: 60px;
+	margin-left: 35%;
+	margin-right: -50%;
+}
+
+.errorMsg {
+	margin-top: 100px;
+	margin-left: 10px;
+}

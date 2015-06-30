@@ -148,7 +148,7 @@ function isLoggedIn(req, res, next) {
 // =====================================
 // CREATE ISSUE ========================
 // =====================================
-  var issueNum = 1000; //TODO - creat an auto-incrementing field in the data model to handle issue number
+
 
   app.post('/issues', isLoggedIn, function (req,res){ 
     if (req.body.issue.address === '' || req.body.issue.title === '') {
@@ -171,7 +171,6 @@ function isLoggedIn(req, res, next) {
             var lat = results.results[0].geometry.location.lat; 
             var long = results.results[0].geometry.location.lng;
             var issue = new db.Issue(req.body.issue);
-            issueNum++;
             issue.lat = lat;
             issue.long = long;
             issue.loc = [long, lat];
@@ -482,7 +481,7 @@ function isLoggedIn(req, res, next) {
         });
     });
 
-//-----comments----- STRETCH GOAL//
+//-----comments----- STRETCH GOAL//TODO -- build comment system for issues and users
 
 
 
