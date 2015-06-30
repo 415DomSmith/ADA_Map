@@ -1,6 +1,7 @@
 $(function() {
   var map,
 			mapDiv = document.getElementById('map-canvas'),
+      markersArray = []
 			infowindow = new google.maps.InfoWindow(); // Global declaration of the infowindow  
 
 
@@ -19,53 +20,53 @@ $(function() {
 
 	  map = new google.maps.Map(mapDiv,mapOptions); //builds map in #map-canvas DIV, with the above options. Current view set to show all of US.
 
+   
 	  //AJAX call to server for issue data
-	  $.ajax({
-        type: 'GET',
-        url: '/issues',
-        dataType: 'json'
-    }).done(function (data){
-    	// console.log(data);
-    	var issues = data.issues;
-    	//goes in object, loops through array in object, saves data to make a new marker
-      issues.forEach(function (issue){
+	  // $.ajax({
+   //      type: 'GET',
+   //      url: '/issues',
+   //      dataType: 'json'
+   //  }).done(function (data){
+   //  	// console.log(data);
+   //  	var issues = data.issues;
+   //  	//goes in object, loops through array in object, saves data to make a new marker
+   //    issues.forEach(function (issue){
           
-        var lat = issue.lat; //get lat from issue in DB
-        var long = issue.long; //get long from issue in DB
-        var title = issue.title; //get title from issue, so when hover over marker title appears.
+   //      var lat = issue.lat; //get lat from issue in DB
+   //      var long = issue.long; //get long from issue in DB
+   //      var title = issue.title; //get title from issue, so when hover over marker title appears.
 
-        var myLatlng = new google.maps.LatLng(lat,long); //set position of marker
+   //      var myLatlng = new google.maps.LatLng(lat,long); //set position of marker
 
-        //making the marker. Because markers == JS objects, can set key:value pairs for anything we want to store data. Will use this data to make call out window
-        var marker = new google.maps.Marker({
-        	position: myLatlng,
-          map: map,
-          animation: google.maps.Animation.DROP, //map animation, may want to remove. Too many markers could cause lag / choppiness.
-          title: title,
-          icon: '/assets/mapIcons/apin50.png' //custom map marker
-        })
-        google.maps.event.addListener(marker, "click", function(){  //add click listener to open info window to each marker
-  				var content = '<div id="iw-container">' +
-												'<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
-												'<div class="iw-content">' +
-												'<div class="iw-subTitle"><a href="/issues/' + issue._id +'/">'+ issue.title +'</a></div>' +
-												'<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
-												'<p>'+ issue.description +'</p>' + 
-												'<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
-												'<p>Votes: ' + issue.votes + '</p>'+
-												'<p>Created on: ' + issue.dateCreated + '</p>'+
-												'</div>' +
-												'<div class="iw-bottom-gradient"></div>' +
-												'</div>';
+   //      //making the marker. Because markers == JS objects, can set key:value pairs for anything we want to store data. Will use this data to make call out window
+   //      var marker = new google.maps.Marker({
+   //      	position: myLatlng,
+   //        map: map,
+   //        animation: google.maps.Animation.DROP, //map animation, may want to remove. Too many markers could cause lag / choppiness.
+   //        title: title,
+   //        icon: '/assets/mapIcons/apin50.png' //custom map marker
+   //      })
+   //      google.maps.event.addListener(marker, "click", function(){  //add click listener to open info window to each marker
+  	// 			var content = '<div id="iw-container">' +
+			// 									'<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
+			// 									'<div class="iw-content">' +
+			// 									'<div class="iw-subTitle"><a href="/issues/' + issue._id +'/">'+ issue.title +'</a></div>' +
+			// 									'<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
+			// 									'<p>'+ issue.description +'</p>' + 
+			// 									'<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
+			// 									'<p>Votes: ' + issue.votes + '</p>'+
+			// 									'<p>Created on: ' + issue.dateCreated + '</p>'+
+			// 									'</div>' +
+			// 									'<div class="iw-bottom-gradient"></div>' +
+			// 									'</div>';
 
-  				infowindow.close()  //close all other info windows when a new one is clicked (only one open at a time, reduce screen clutter)
-    			infowindow.setContent(content);  //populates info window with content HTML string
-      		infowindow.open(map, marker);		//opens info window	 
-  			});  
-      })
-    })	  
+  	// 			infowindow.close()  //close all other info windows when a new one is clicked (only one open at a time, reduce screen clutter)
+   //  			infowindow.setContent(content);  //populates info window with content HTML string
+   //    		infowindow.open(map, marker);		//opens info window	 
+  	// 		});  
+   //    })
+   //  })	  
 
-//TODO - build dynamic populating issue table next to map, so info in table is only what appears in map view
 // =================================================================
 // GET BOUNDS ON MAP IDLE, GEOQUERY DB FOR ISSUES, POPULATE TABLE ==
 // =================================================================
@@ -88,12 +89,50 @@ $(function() {
         $.ajax({
           type: 'GET',
           url: '/',
-          // contentType: 'json',
           dataType: 'json',
           data: box
         }).done (function (res){
           console.log(res);
           var issues = res;
+
+          issues.forEach(function (issue){
+          
+            var lat = issue.lat; //get lat from issue in DB
+            var long = issue.long; //get long from issue in DB
+            var title = issue.title; //get title from issue, so when hover over marker title appears.
+
+            var myLatlng = new google.maps.LatLng(lat,long); //set position of marker
+
+            //making the marker. Because markers == JS objects, can set key:value pairs for anything we want to store data. Will use this data to make call out window
+            var marker = new google.maps.Marker({
+              position: myLatlng,
+              map: map,
+              // animation: google.maps.Animation.DROP, //map animation, may want to remove. Too many markers could cause lag / choppiness.
+              title: title,
+              icon: '/assets/mapIcons/apin50.png' //custom map marker
+            })
+            google.maps.event.addListener(marker, "click", function(){  //add click listener to open info window to each marker
+              var content = '<div id="iw-container">' +
+                            '<div class="iw-title">Issue# ' + issue.issueNum + '</div>' +
+                            '<div class="iw-content">' +
+                            '<div class="iw-subTitle"><a href="/issues/' + issue._id +'/">'+ issue.title +'</a></div>' +
+                            '<img src="'+ issue.image + '" alt="Issue Image" onerror="this.src="/assets/noImg.jpg" height="115" width="83">' +
+                            '<p>'+ issue.description +'</p>' + 
+                            '<div class="iw-subTitle"> Created by: '+ issue.user.local.username + '</div>' +
+                            '<p>Votes: ' + issue.votes + '</p>'+
+                            '<p>Created on: ' + issue.dateCreated + '</p>'+
+                            '</div>' +
+                            '<div class="iw-bottom-gradient"></div>' +
+                            '</div>';
+
+              infowindow.close()  //close all other info windows when a new one is clicked (only one open at a time, reduce screen clutter)
+              infowindow.setContent(content);  //populates info window with content HTML string
+              infowindow.open(map, marker);   //opens info window  
+              markersArray.push(marker);
+            });  
+          })
+
+          //DYNAMICALLY POPULATING THE TABLE NEXT TO MAP
           $("#tbody").html(" ");
 
           issues.forEach(function (issue){
@@ -115,7 +154,7 @@ $(function() {
               '<div class="issueBox-user"> Created by: <a href=" ">' + issue.user.local.username + '</a></div>' +
               '<div class="issueBox-date">' + issue.dateCreated + '</div></td>' +
               '<td class="issueBox-col3">' + 
-              '<div class="issueBox-votes"> votes:' + issue.votes + '</div>';
+              '<div class="issueBox-votes"> votes: ' + issue.votes + '</div>';
               if (document.cookie) {
               tableContent += '<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id="' + issue._id + '"></div>';
               }

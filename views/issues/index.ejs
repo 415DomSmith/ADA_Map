@@ -21,7 +21,18 @@
 
 <div id="main-content">
 
-<a href="/issues/new"> Create a New Issue</a>
+	<div id="issue-search">
+				<form action="/issues" method="GET" id="form-control">
+					<label for="issueSearch"> Search for an Issue:</label>
+					<input type="text" class="form-control" name="issue" id="issueSearch" placeholder= "Enter a Issue #" autofocus>
+				</form>	
+			
+
+	<form action="/issues/new" id="form-control" >
+    <input type="submit" class="issBtn" value="Create a New Issue">
+</form>
+</div>
+	
 
 	<div id="issues-box-left">
 		<table class="table">

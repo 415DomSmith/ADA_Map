@@ -91,7 +91,7 @@ function isLoggedIn(req, res, next) {
         }, 
         'application/json': function(){
           var box = [req.query.NE, req.query.SW] //format req.query in to box of bounds    
-          db.Issue.find({loc : {"$geoWithin" : {$box : box}}}).populate('user').limit(30).exec(function (err, issues){ //find all issues inside box of bounds
+          db.Issue.find({loc : {"$geoWithin" : {$box : box}}}).populate('user').sort({votes: 'desc'}).limit(30).exec(function (err, issues){ //find all issues inside box of bounds
             res.send(issues)
           })
         },

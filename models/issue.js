@@ -1,6 +1,41 @@
 var mongoose = require('mongoose');
 
+// Create a sequence
+function sequenceGenerator(name){
+  var SequenceSchema, Sequence;
 
+  SequenceSchema = new mongoose.Schema({
+    nextSeqNumber: { type: Number, default: 1 }
+  });
+
+  Sequence = mongoose.model(name + 'Seq', SequenceSchema);
+
+  return {
+    next: function(callback){
+      Sequence.find(function(err, data){
+        if(err){ throw(err); }
+
+        if(data.length < 1){
+          // create if doesn't exist create and return first
+          Sequence.create({}, function(err, seq){
+            if(err) { throw(err); }
+            callback(seq.nextSeqNumber);
+          });
+        } else {
+          // update sequence and return next
+          Sequence.findByIdAndUpdate(data[0]._id, { $inc: { nextSeqNumber: 1 } }, function(err, seq){
+            if(err) { throw(err); }
+            callback(seq.nextSeqNumber);
+          });
+        }
+      });
+    }
+  };
+}
+
+
+// sequence instance
+var sequence = sequenceGenerator('issue');
 
 var issueSchema = new mongoose.Schema({
 
@@ -31,6 +66,15 @@ var issueSchema = new mongoose.Schema({
 });
 
 issueSchema.index({loc: '2dsphere'});
+
+issueSchema.pre('save', function (next){
+	var doc = this;
+	// get the next sequence
+  sequence.next(function(nextSeq){
+    doc.issueNum = nextSeq;
+    next();
+  });
+})
 
 // db.issues.ensureIndex( { loc : "2dsphere" } ) //Creates an index of location data in issues collection.
 
