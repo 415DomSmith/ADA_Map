@@ -631,6 +631,25 @@ overflow: hidden;
 
 }
 
+/*ABOUT PAGE*/
+
+.aboutTextBox {
+	margin-top: 90px;
+
+}
+
+.aboutText {
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-bottom: 15px;
+
+}
+
+#about-codeArt {
+	margin-left: 40%;
+	width: 180px; 
+}
+
 /*ERROR PAGES*/
 
 #error-codeArt {

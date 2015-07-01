@@ -228,7 +228,7 @@ function isLoggedIn(req, res, next) {
       });
   });
 
-
+//TODO - Solve Error handling
 // =====================================
 // ISSUE NUMBER QUERY ROUTE ============
 // =====================================
@@ -244,10 +244,16 @@ app.get('/issues/number', function (req, res){
       var id = issue[0]._id;
       res.redirect('/issues/'+ id + '/');  
     }    
-  })
-  
+  }) 
 })
 
+// =====================================
+// ABOUT PAGE ==========================
+// =====================================
+
+app.get('/about', function (req, res){
+  res.render('about')
+});
 
 
 //TODO - Clean up edit page. Make it functional, keep in mind what user's should be able to edit and what they shouldn't.
