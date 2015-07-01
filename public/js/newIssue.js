@@ -38,7 +38,7 @@ initialize();
           var lat = position.coords.latitude;
           var long = position.coords.longitude;
           var loc = lat + "," + long;
-          var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=';
+          var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
           var gk = '&key=AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw&result_type=street_address';
 
           // console.log(loc);
@@ -81,7 +81,7 @@ initialize();
             var lat = this.getPosition().lat();
             var long = this.getPosition().lng();
             var latlng = lat + "," + long
-            var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=';
+            var url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
             var gk = '&key=AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw&result_type=street_address';
 
     

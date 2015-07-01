@@ -32,28 +32,28 @@ var request 		 = require('request');
 // ==================================================
 // QUOTA GUARD STUFF TO MAKE API CALLS FROM HEROKU ==
 // ==================================================
-var http, options, proxy, url;
+// var http, options, proxy, url;
 
-http = require("http");
-url = require("url");
+// http = require("http");
+// url = require("url");
 
-proxy = url.parse(process.env.QUOTAGUARD_URL);
-target  = url.parse("http://maps.googleapis.com/maps/api/geocode/json?address=");
+// proxy = url.parse(process.env.QUOTAGUARD_URL);
+// target  = url.parse("http://maps.googleapis.com/maps/api/geocode/json?address=");
 
-options = {
-  hostname: proxy.hostname,
-  port: proxy.port || 80,
-  path: target.href,
-  headers: {
-    "Proxy-Authorization": "Basic " + (new Buffer(proxy.auth).toString("base64")),
-    "Host" : target.hostname
-  }
-};
+// options = {
+//   hostname: proxy.hostname,
+//   port: proxy.port || 80,
+//   path: target.href,
+//   headers: {
+//     "Proxy-Authorization": "Basic " + (new Buffer(proxy.auth).toString("base64")),
+//     "Host" : target.hostname
+//   }
+// };
 
-http.get(options, function(res) {
-  res.pipe(process.stdout);
-  return console.log("status code", res.statusCode);
-});
+// http.get(options, function(res) {
+//   res.pipe(process.stdout);
+//   return console.log("status code", res.statusCode);
+// });
 
 
 // =====================================
@@ -170,7 +170,7 @@ function isLoggedIn(req, res, next) {
     } else {
       var address = encodeURIComponent(req.body.issue.address + "," + req.body.issue.city + "," + req.body.issue.state); //gets address from user
       var city = req.body.issue.city;
-      var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
+      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
         request.get(url + address + gk, function (error, response, resBody){ //queries google for proper address format
           if (error || JSON.parse(resBody).status === 'ZERO_RESULTS'){
             console.log(error);

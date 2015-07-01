@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 mongoose.connect( process.env.MONGOLAB_URI || "mongodb://localhost/ADAmap_V2")
 
 
-// mongoose.set('debug', true);
+mongoose.set('debug', true);
 
 
 module.exports.User = require('./user');
