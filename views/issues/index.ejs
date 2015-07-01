@@ -2,40 +2,40 @@
 
 <div id="banner"> 
 	<a href="/">
-		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
+		<img src="/assets/logo146.png" id="logo-banner" role="nav" title="Return to Map page" alt="ADAmap">
 	</a>
-	<a href="/" class="banner-content hvr-underline-from-center"> About</a>
-	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center"> Learn</a>
+	<a href="/" class="banner-content hvr-underline-from-center" role="nav" title="Link to About page"> About</a>
+	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center" role="nav" title="Link ADA.gov"> Learn</a>
 	<% if (currentUser !== ""){ %>
-	<a href="/profile">
+	<a href="/profile" role="nav" title="link to users profile">
 		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
 	</a>
 	<% } %>
 	<% if (currentUser == ""){ %>
- 		<a href="/login" class="banner-content hvr-underline-from-center" id="banner-login"> Login</a>
+ 		<a href="/login" class="banner-content hvr-underline-from-center" id="banner-login" role="nav"> Login</a>
 	<% } else { %>
-		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout"> Logout</a>
+		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout" role="nav"> Logout</a>
 	<% } %>
 
 </div>
 
 <div id="main-content">
 
-	<div id="issue-search">
+	<div id="issue-search" >
 				<form action="/issues/number" method="GET" id="form-control">
 					<label for="issueSearch"> Search for an Issue:</label>
-					<input type="text" class="form-control" name="issueNum" id="issueSearch" placeholder= "Enter a Issue #" autofocus>
+					<input type="text" class="form-control" name="issueNum" id="issueSearch" role="search" title="Search for an issue by issue number" placeholder= "Enter a Issue #" autofocus>
 				</form>	
 			
 
 	<form action="/issues/new" id="form-control" >
-    <input type="submit" class="issBtn" value="Create a New Issue">
+    <input type="submit" class="issBtn" role="nav" title="Link to create a new issue" value="Create a New Issue">
 </form>
 </div>
 	
 
 	<div id="issues-box-left">
-		<table class="table">
+		<table class="table" role="main" title="Issues, sorted by date created (most recent shown)">
 			<thead>
 				<tr>
 					<th> Most Recent Issues </th>
@@ -47,21 +47,21 @@
 				<% dates.forEach(function(issue){ %>
 				<tr>
 					<td class="issueBox-col1"> 
-						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+						<div class="issueBox-num" role="nav" title="Link to Issues individual page and comments"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a></div>
+						<div class="issueBox-img" role="nav" title="Link to Issues individual page and comments and user uploaded image of issue"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a></div>
 
 						<div> <%= issue.city%> </div>
 					</td>
 					<td class="issueBox-col2"> 
-						<div class="issueBox-title"> <%= issue.title %> </div>
-						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
-						<div class="issueBox-date"> Created on: <%= issue.dateCreated %></div>
+						<div class="issueBox-title" role="main" title="Issue title"> <%= issue.title %> </div>
+						<div class="issueBox-user" role="main" title="User that created this issue"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
+						<div class="issueBox-date" role="main" title="Date issue was created"> Created on: <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
-						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-votes" role="main" title="Number of votes issue has"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
+						<div class="issueBox-voteIcon" id="voteIcon" role="main" title="vote for this issue!"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
 					
 					</td>
@@ -73,7 +73,7 @@
 	</div>
 
 	<div id="issues-box-right">
-		<table class="table">
+		<table class="table" role="main" title="Issues, sorted by number of votes (most votes on top)">
 			<thead>
 				<tr>
 					<th> Top Issues (by vote) </th>
@@ -85,21 +85,21 @@
 				<% issues.forEach(function(issue){ %>
 				<tr>
 					<td class="issueBox-col1"> 
-						<div class="issueBox-num"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+						<div class="issueBox-num" role="nav" title="Link to Issues individual page and comments"> AdaMap Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a>
+						<div class="issueBox-img" role="nav" title="Link to Issues individual page and comments and user uploaded image of issue"><a href="/issues/<%= issue._id%>/"><img src="<%= issue.image %>" style="width:12vw; height:14vh;" onerror="this.src='/assets/noImg.jpg'"></a>
 
 						<div> <%= issue.city%> </div>
 					</td>
 					<td class="issueBox-col2"> 
-						<div class="issueBox-title"> <%= issue.title %> </div>
-						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
-						<div class="issueBox-date"> Created on: <%= issue.dateCreated %></div>
+						<div class="issueBox-title" role="main" title="Issue title"> <%= issue.title %> </div>
+						<div class="issueBox-user" role="main" title="Name of user that created this issue"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
+						<div class="issueBox-date" role="main" title="date created"> Created on: <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
-						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-votes" role="main" title="number of votes this issue has"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
+						<div class="issueBox-voteIcon" id="voteIcon" role="main" title="vote for this issue!"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
 				
 					</td>

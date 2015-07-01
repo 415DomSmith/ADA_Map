@@ -2,13 +2,13 @@
 
 <div id="banner" role="banner"> 
 	<a href="/">
-		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
+		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap" title="Image of ADAmap Logo">
 	</a>
-	<a href="/" class="banner-content hvr-underline-from-center" role="nav"> About</a>
-	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center" role="nav"> Learn</a>
+	<a href="/" class="banner-content hvr-underline-from-center" role="nav" title="About Page"> About</a>
+	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center" role="nav" title="Link to ADA.gov"> Learn</a>
 	<% if (currentUser !== ""){ %>
 	<a href="/profile">
-		<div class="banner-content" id="photo-div" role="nav" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
+		<div class="banner-content" id="photo-div" role="nav" title="Link to users profile" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
 	</a>
 	<% } %>
 	<% if (currentUser == ""){ %>
@@ -16,29 +16,29 @@
 	<% } else { %>
 		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout" role="nav"> Logout</a>
 	<% } %>
-	<a href="/issues" class="banner-content hvr-underline-from-center" id="banner-issues" role="nav"> Issues</a>
+	<a href="/issues" class="banner-content hvr-underline-from-center" id="banner-issues" role="nav" title="Link to index of issues"> Issues</a>
 
 </div>
 
 
-	<div id="map-controls" role="application" title="Google Map and Controls">
-		<div id="city-search" role="search">
+	<div id="map-controls" role="application">
+		<div id="city-search" role="search" title="Search Bar to Zoom and Center Map on Search Query">
 			<form action="/issues" method="GET" id="form-control">
 				<input type="text" class="form-control" name="address" role="search" id="address-search" placeholder= "Search by City and State" autofocus>
 			</form>	
 		</div>
-		<button id="locate-me">Find Me! <img src="/assets/mapIcons/locate.gif" alt=""></button>
-		<div id="loader-container">
+		<button id="locate-me" role="application" title="Centers and Zooms map to users location">Find Me! <img src="/assets/mapIcons/locate.gif" alt=""></button>
+		<div id="loader-container" role="complementary">
   	<p id="loadingText">Loading</p>
 	</div>
 		<div id='map-canvas' class='map-canvas' role="application" data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
 	</div>
 
-	<div id="issues-box">
-		<table class="table">
+	<div id="issues-box" role="main" title="Table of locations in map view">
+		<table class="table" role="main">
 			<thead>
 				<tr>
-					<th>Top Issues Nearby</th>
+					<th role="contentinfo">Top Issues Nearby</th>
 					<th> </th>
 					<th> </th>	
 				</tr>
@@ -47,21 +47,21 @@
 				<% issues.forEach(function(issue){ %>
 				<tr>
 					<td class="issueBox-col1"> 
-						<div class="issueBox-num"> Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
+						<div class="issueBox-num" role="nav" title:"Navigates to specific issues page and comments"> Issue# <a href="/issues/<%= issue._id%>/"> <%= issue.issueNum %> </a> <div>
 
-						<div class="issueBox-img"><a href="/issues/<%= issue._id%>/"> <img src="<%= issue.image %>" style="width:11vw; height:12vh;" onerror="this.src='/assets/noImg.jpg'"> </a></div>
+						<div class="issueBox-img" role="main"><a href="/issues/<%= issue._id%>/"> <img src="<%= issue.image %>" style="width:11vw; height:12vh;" onerror="this.src='/assets/noImg.jpg'"> </a></div>
 
 						<div class="issueBox-city"> <%= issue.city%> </div>
 					</td>
 					<td class="issueBox-col2"> 
-						<div class="issueBox-title"> <%= issue.title %> </div>
-						<div class="issueBox-user"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
-						<div class="issueBox-date"> <%= issue.dateCreated %></div>
+						<div class="issueBox-title" role="main"> <%= issue.title %> </div>
+						<div class="issueBox-user" role="main"> Created by: <a href=" "><%= issue.user.local.username %> </a> </div>
+						<div class="issueBox-date" role="main"> <%= issue.dateCreated %></div>
 					</td>
 					<td class="issueBox-col3"> 
-						<div class="issueBox-votes"> votes: <%= issue.votes %> </div>
+						<div class="issueBox-votes" role="main"> votes: <%= issue.votes %> </div>
 						<% if (currentUser !== ""){ %>
-						<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
+						<div class="issueBox-voteIcon" id="voteIcon" role="main" title="Vote for this issue to move it up the table"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
 						<% } %>
 					</td>
 			
@@ -73,14 +73,5 @@
 
 
 
-
-
-
-
-
-
-
-
-<div id="footer"> </div>
 
 <% include partials/footer %>
