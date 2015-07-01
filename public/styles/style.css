@@ -129,6 +129,7 @@ body {
 /*BODY*/
 
 
+
 #main-content { 
 	padding-top: 100px;	
 	padding-left: 10px;
@@ -205,7 +206,7 @@ body {
   text-decoration: none;
 }
 
-/*TABLES*/
+/*ISSUES PAGE TABLES*/
 
 #issues-box-left {
 	margin-top: 30px;
@@ -370,8 +371,168 @@ margin-top: -25px;
 	margin-left: 10px;
 }
 
+/*NEW ISSUE PAGE*/
 
-/*ERROR*/
+.newPageCont {
+	margin-left: 40px;
+	margin-top: -10px;
+}
+
+.instructions {
+	position: absolute;
+	margin-left: 640px;
+	display: inline;
+	height: 150px;
+	width: 300px;
+	border: solid 2px rgb(38,129,206);
+	font-size: 12px;
+}
+
+.inst-text {
+	display: inline-block;
+	width: 150px;
+	padding-left: 18px;
+}
+li {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.instrucGif {
+	position: absolute;
+	display: inline-block;
+	margin-top: 15px;
+	margin-left: 10px;
+}
+
+
+/*MAP STUFF*/
+
+#map-canvas {
+
+	position: absolute;
+	display: inline;
+	margin-top: 163px;
+	height: 280px;
+	width: 45vw;
+	margin-left: 500px;
+	margin-bottom: 10px;
+	border: solid 2px rgb(38,129,206);
+}
+
+#loader-container {
+	background-color: rgba(38,129,206,0.7); 
+  width: 200px;
+  height: 200px;
+  color: white;
+  margin: 0 auto;
+  position: absolute;
+  margin-top: 300px;
+  margin-left: 780px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  border: 5px solid #3498db;
+  border-radius: 50%;
+  -webkit-animation: borderScale 1s infinite ease-in-out;
+  animation: borderScale 1s infinite ease-in-out;
+  z-index: 2;
+  display: none;
+}
+
+#loadingText {
+  font-weight: bold;
+  font-size: 2em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+@-webkit-keyframes borderScale {
+  0% {
+    border: 5px solid white;
+  }
+  50% {
+    border: 25px solid #3498db;
+  }
+  100% {
+    border: 5px solid white;
+  }
+}
+
+@keyframes borderScale {
+  0% {
+    border: 5px solid white;
+  }
+  50% {
+    border: 25px solid #3498db;
+  }
+  100% {
+    border: 5px solid white;
+  }
+}
+
+#locate-me {
+	position: absolute;
+	background-color: white;
+	display: inline-block;
+	margin-top: 170px;
+	font-size: .7em;
+	width: 80px;
+	height: 26px;
+	margin-left: 600px;
+	-webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: 1px 0 8px rgba(0,0,0,.15);
+  -moz-box-shadow: 1px 0 8px rgba(0,0,0,.15);
+  z-index: 2;
+}
+
+#issue-description {
+	display: inline;	
+}
+
+#issue-input {
+	display: inline;	
+}
+
+.form-inline {
+	display: inline;
+}
+
+.submit-button {
+	margin-right: 600px;
+}
+
+#address {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+#city {
+	font-size: 18px;
+	width: 160px;		
+}
+
+#state {
+	font-size: 18px;
+	width: 33px;
+}
+
+#description {
+	font-size: 18px;
+}
+
+#title {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 18px;
+}
+
+
+/*ERROR PAGES*/
 
 #error-codeArt {
 	margin-top: 60px;

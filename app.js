@@ -151,10 +151,11 @@ function isLoggedIn(req, res, next) {
 
 
   app.post('/issues', isLoggedIn, function (req,res){ 
-    if (req.body.issue.address === '' || req.body.issue.title === '') {
+    if (req.body.issue.address === '' || req.body.issue.city === '' || req.body.issue.title === '') {
       res.send('Address and Title fields must be completed')
     } else {
-      var address = encodeURIComponent(req.body.issue.address); //gets address from user
+      var address = encodeURIComponent(req.body.issue.address + "," + req.body.issue.city + "," + req.body.issue.state); //gets address from user
+      var city = req.body.issue.city;
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
         request.get(url + address + gk, function (error, response, resBody){ //queries google for proper address format
           if (error || JSON.parse(resBody).status === 'ZERO_RESULTS'){
@@ -175,7 +176,8 @@ function isLoggedIn(req, res, next) {
             issue.long = long;
             issue.loc = [long, lat];
             issue.address = address;
-            issue.issueNum = issueNum;
+            issue.city = city;
+            // issue.issueNum = issueNum;
             issue.reviewed = false;
             issue.solved = false;
             issue.views = 0;

@@ -171,7 +171,6 @@ $(function() {
 		        position: pos,
 		        animation: google.maps.Animation.DROP,
 		        title: 'My Location',
-		        draggable: true,
 		        icon: '/assets/mapIcons/mepin.png'
 		      });     
 				//zoom to users location

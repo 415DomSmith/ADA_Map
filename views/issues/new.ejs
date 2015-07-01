@@ -1,11 +1,11 @@
-<% include ../partials/header %>
+<% include ../partials/newIssueheader %>
 
 <div id="banner"> 
 	<a href="/">
 		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
 	</a>
 	<a href="/" class="banner-content hvr-underline-from-center"> About</a>
-	<a href="/" class="banner-content hvr-underline-from-center"> Learn</a>
+	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center"> Learn</a>
 	<% if (currentUser !== ""){ %>
 	<a href="/profile">
 		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
@@ -20,13 +20,32 @@
 
 </div>
 
-<div id="main-content">
+<div id="main-content" class="newPageCont">
+
+	<div class="instructions">
+		<ul class="inst-text">
+			<li>Click the "Find Me!" button.</li>
+			<li>Drag the pin to your issue location.</li>
+			<li>The location information will populate on it's own.</li>
+			<li>Or enter the address, city, and state manually.</li>
+		</ul>
+		<img src="/assets/dragmarker.gif" class="instrucGif" alt="">	
+
+	</div>
+	<div id="map-controls">
+		<button id="locate-me">Find Me! <img src="/assets/mapIcons/locate.gif" alt=""></button>
+		<div id="loader-container">
+  		<p id="loadingText">Loading</p>
+		</div>
+		<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'>
+		</div>
+	</div>
 
 	<div id="issue-input">
 		<form action="/issues" class="form-inline" method="POST">
 			
 		
-				<input type="hidden" name="issue[image]" role="uploadcare-uploader" id="uploadcare-widget" class="form-control" name="my_file" /><label for="uploadcare"> Upload an Image of the Issue.</label>
+				<input type="hidden" name="issue[image]" role="uploadcare-uploader" id="uploadcare-widget" class="issBtn" name="my_file" /><label for="uploadcare"> Upload an Image of the Issue.</label>
 				
 			<div id="issue-title" class="text-box">
 			  <label for="title">Title: 
@@ -38,16 +57,23 @@
 			  <label for="address">Address: 
 			    <input type="text" name="issue[address]" id="address" class="form-control" autofocus>
 			  </label>
+			  <label for="city">City:
+			  	<input type="text" name="issue[city]" id="city" class="form-control" autofocus>
+				</label>
+				<label for="city">State:
+			  	<input type="text" name="issue[state]" id="state" class="form-control" autofocus>
+				</label>
+
 			</div>
 
+			<div><label> Decription of Issue: </label></div>	
 			<div id ="issue-description" class="text-box">	
-					<label for="description">Description:</label>
-					<textarea name="issue[description]" rows="20" cols="90" id="description" class="form-control"></textarea>
+					<textarea name="issue[description]" rows="15" cols="50" id="description" class="form-control"></textarea>
 			</div>
 
 			
 
-			<input type="submit" value="Create New Issue" id="submit-button" class="form-control">
+			<input type="submit" value="Create New Issue" class="submit-button issBtn" class="form-control">
 		</form>
 	</div>
 

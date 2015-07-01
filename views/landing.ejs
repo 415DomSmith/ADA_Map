@@ -5,7 +5,7 @@
 		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
 	</a>
 	<a href="/" class="banner-content hvr-underline-from-center"> About</a>
-	<a href="/" class="banner-content hvr-underline-from-center"> Learn</a>
+	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center"> Learn</a>
 	<% if (currentUser !== ""){ %>
 	<a href="/profile">
 		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
@@ -20,7 +20,7 @@
 
 </div>
 
-<div id="main-content">
+
 	<div id="map-controls">
 		<div id="city-search">
 			<form action="/issues" method="GET" id="form-control">
@@ -29,8 +29,8 @@
 		</div>
 		<button id="locate-me">Find Me! <img src="/assets/mapIcons/locate.gif" alt=""></button>
 		<div id="loader-container">
-  <p id="loadingText">Loading</p>
-</div>
+  	<p id="loadingText">Loading</p>
+	</div>
 		<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
 	</div>
 
@@ -76,7 +76,6 @@
 
 
 
-</div>
 
 
 
