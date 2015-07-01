@@ -102,27 +102,13 @@ function isLoggedIn(req, res, next) {
   });
 
 // =====================================
-// ISSUES ROUTE OR WHATEVER ===============
-// =====================================
-  // app.get('/test/:issues', function (req,res){  
-  //     console.log("test", req)
-  //     var box = req.params;
-  //     // console.log(box)
-  //     // var box = [[-120.10292968750002,19.927118151214636],[-76.59707031250002,54.79766616036189]]
-  //     db.Issue.find({loc : {"$geoWithin" : {$box : box}}}).exec(function (err, issues){
-  //       // console.log(issues);
-  //       res.send(issues)
-  //     })
-  // });
-
-// =====================================
 // ISSUES INDEX / DATE & VOTES TABLE ===
 // =====================================
   app.get('/issues', function (req,res){
-    db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
-      db.Issue.find({}).sort({dateCreated: -1}).limit(30).populate('user').exec(function (err, dates) {
-        res.format({
-          'text/html': function(){
+    res.format({
+      'text/html': function(){
+        db.Issue.find({}).sort({votes: 'desc'}).limit(30).populate('user').exec(function (err, issues){
+          db.Issue.find({}).sort({dateCreated: -1}).limit(30).populate('user').exec(function (err, dates) {
             if (req.session.passport.user == null){
               console.log('NO ONE LOGGED IN');
               res.render('issues/index', {issues : issues, dates : dates, currentUser: ""})
@@ -132,15 +118,16 @@ function isLoggedIn(req, res, next) {
                 res.render('issues/index', {issues : issues, dates : dates, currentUser: user.local.username});
               })     
             }
-          },
-          'application/json': function(){
-            res.send({issues:issues});
-          },
-          'default': function(){
-            res.status(406).send('Error. Please Try Again')
-          }
+          })
         })
-      })
+      },
+      'application/json': function(){
+        console.log(req);
+        // db.Issue.find({})
+      },
+      'default': function(){
+        res.status(406).send('Error. Please Try Again')
+      }      
     }); 
   });
 
@@ -226,17 +213,42 @@ function isLoggedIn(req, res, next) {
 // =====================================
   app.get('/issues/:id/', function (req,res){
       db.Issue.findById(req.params.id).populate('comments').populate('user').exec(function (err,issue){
-        if (req.session.passport.user == null){
-          console.log('NO ONE LOGGED IN');
-          res.render('issues/show', {issue : issue, currentUser: ""})
-        } else {
-          console.log(req.session.passport.user + " IS LOGGED IN"); 
-          db.User.findById(req.session.passport.user, function (err, user){
-          res.render('issues/show', {issue : issue, currentUser: user.local.username});
-          })     
-        }
+        db.Comment.find({issue : req.params.id}).populate('user').exec(function (err, comment){
+          // console.log(comment);
+          if (req.session.passport.user == null){
+            // console.log('NO ONE LOGGED IN');
+            res.render('issues/show', {issue : issue, comment : comment, currentUser: ""})
+          } else {
+            // console.log(req.session.passport.user + " IS LOGGED IN"); 
+            db.User.findById(req.session.passport.user, function (err, user){
+              res.render('issues/show', {issue : issue, comment : comment, currentUser: user.local.username});
+            })
+          }     
+        })
       });
   });
+
+
+// =====================================
+// ISSUE NUMBER QUERY ROUTE ============
+// =====================================
+
+app.get('/issues/number', function (req, res){
+  // console.log(req.query)
+  db.Issue.find(req.query).exec(function (err, issue){
+    console.log(issue);
+    if (issue == [] || !issue || issue == null){
+      res.status(406).send('No Issue Matching That Number');
+    } else {
+      // console.log(issue);
+      var id = issue[0]._id;
+      res.redirect('/issues/'+ id + '/');  
+    }    
+  })
+  
+})
+
+
 
 //TODO - Clean up edit page. Make it functional, keep in mind what user's should be able to edit and what they shouldn't.
 // =====================================
@@ -290,6 +302,8 @@ function isLoggedIn(req, res, next) {
       }
     })  
   });
+
+
 
 //TODO - Same as above, make the option to delete an issue only possible by admins
 // =====================================
@@ -485,6 +499,29 @@ function isLoggedIn(req, res, next) {
 
 //-----comments----- STRETCH GOAL//TODO -- build comment system for issues and users
 
+app.post("/issues/:issue_id/comments", isLoggedIn, function (req, res) {
+  db.Comment.create(req.body.comment, function (err, comment) { //creates a comment based on the form body submit, comment data is second param and is used below
+    console.log(req.session.passport.user);
+    if (err){
+      console.log(err);
+      res.render('issues/index');
+    } else {
+      db.Issue.findById(req.params.issue_id, function (err, issue) { //finds in the db the post based on the id passed in the url 
+        issue.comments.push(comment); //pushes the comment data to the found post's comments array
+        comment.issue = issue._id; //sets the post to the id in the url/req.params
+        comment.user = req.session.passport.user; //sets the user id of the comment to the session id, giving ownership of that comment to the logged in user
+        issue.save(); //updates post collection in db
+        comment.save(); //updates comment collection in db
+      
+        db.User.findById(req.session.passport.user, function (err, user) { //finds the user in the user collection based on his session Id (same as user ID)
+        user.comments.push(comment) //add the comment to the users comments array
+        user.save(); //updates user collection in db
+        res.redirect("/issues/" + req.params.issue_id + "/")
+        })
+      })
+    } 
+  });
+});
 
 
 

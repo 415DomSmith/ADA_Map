@@ -17,34 +17,66 @@
 		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout"> Logout</a>
 	<% } %>
 	<a href="/issues" class="banner-content hvr-underline-from-center" id="banner-issues"> Issues</a>
-
 </div>
 
 <div id="show-main-content">
 
+	
+		<h1 class="issTitle"> <%= issue.title %></h1>
 
-<h1 class="issTitle"> <%= issue.title %></h1>
+		<h3 class="issNum"> ADAmap Issue# <%= issue.issueNum %> </h3>
+			<div class="thumbsUpShow" id="voteIcon">
+		<% if (currentUser !== ""){ %>
+			 
+				<img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>>
+			
+		<% } %>
 
-<h3 class="issNum"> ADAmap Issue# <%= issue.issueNum %> </h3>
+				<h3 class="issVotes"> This issue has <%= issue.votes %> votes.</h3>
+			</div>
 
-<% if (currentUser !== ""){ %>
-	<div class="thumbsUp" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
-<% } %>
+		<h3 class="issAddress"> Located at: <%= issue.address %> </h3>
+		<div class="issImageBox">
+			<img src="<%= issue.image %>" class="issImage" alt="IssueImg" onerror="this.src='/assets/noImg.jpg'">
+		</div>	
 
-<h3 class="issVotes"> This issue has <%= issue.votes %> votes.</h3>
-
-<h3 class="issAddress"> Located at: <%= issue.address %> </h3>
-<div class="issImageBox">
-	<img src="<%= issue.image %>" class="issImage" alt="IssueImg" onerror="this.src='/assets/noImg.jpg'">
-</div>	
-
-<div class="issueDescriptionBox">
-	<p><STRONG>Issue Description:<STRONG/></p>
-	<p class="descripText"> <%= issue.description  %> </p>
-</div>
-<p class="issCreated"> Created on: <%= issue.dateCreated %> by <a href=" "><%= issue.user.local.username %> </a> </p>
+		<div class="issueDescriptionBox">
+			<p><STRONG>Issue Description:<STRONG/></p>
+			<p class="descripText"> <%= issue.description  %> </p>
+		</div>
+		<p class="issCreated"> Created on: <%= issue.dateCreated %> by <a href=" "><%= issue.user.local.username %> </a> </p>
 
 
+<div class="comment-box">
+	<table class="table commentTable">
+		<thead>
+			<tr>
+				<th>Comment</th>
+				<th>Date</th>
+				<th>User</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% comment.forEach(function(comment){ %> 
+			<tr>
+				<td> <%=comment.commentBody%></td>
+				<td> <%= comment.commentDate %> </td>
+				<td> <a href="/"> <%= comment.user.local.username %> </a> 
+				</td>
+			</tr>
+			<% }) %>
+		</tbody>
+	</table>
+
+
+	<form action="/issues/<%=issue._id%>/comments" class="form-inline" method="POST">
+		
+		<div id="comment-body" class="text-box">
+			<p>Leave a comment:</p>
+			<textarea name="comment[commentBody]" rows="20" cols="50" id="post" class="form-control"></textarea>
+			<input type="submit" value="Add Comment" class="issBtn commentAddBtn">
+		</div>
+	</form>
 
 
 

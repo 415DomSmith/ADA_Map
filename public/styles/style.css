@@ -540,6 +540,14 @@ li {
 	margin-top: 80px;
 }
 
+#issue-container {
+	border: 5px solid rgb(38,129,206);
+	margin-left: 80px;
+	width: 80vw;
+	height: 800px;
+
+}
+
 .issTitle {
 text-align: center;
 padding-top: 20px;
@@ -549,31 +557,36 @@ padding-bottom: 20px;
 .issNum {
 	padding-top: 20px;
 	padding-bottom: 20px;
+	padding-left: 20px;
 	display: inline-block;
 }
 
-.issVotes {
-	position: absolute;
-	margin-left: 690px;
-	margin-top: -30px;
+.thumbsUpShow {
+	display: inline-block;
+	float: right;
+	margin-right: 20px;
+	
 }
 
-.thumbsUp {
-	position: absolute;
-	margin-left: 890px;
-	margin-top: -45px;
+.issVotes {
+	padding-left: 5px;
+	display: inline;
+	
+	
 }
+
 
 .issAddress {
-
+	
+	padding-left: 20px;
 }
 
 .issImage {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	margin-left: 200px;
-	height: 300px;
-	width: 300px;
+	margin-left: 5%;
+	height: 30%;
+	width: 30%;
 	display: inline-block;
 	border: 3px solid rgb(38,129,206);
 }
@@ -582,16 +595,17 @@ padding-bottom: 20px;
 
 }
 .issCreated {
+	padding-top: 20px;
+	padding-left: 10px;
 
 }
 
 .issueDescriptionBox {
-position: absolute;
 display: inline-block;
-margin-left: 684px;
-margin-top: -330px;
+margin-left: 5%;
+
 border: 3px solid rgb(38,129,206);
-width: 300px;
+width: 50%;
 height: 300px;
 overflow: hidden;
 }
@@ -601,6 +615,20 @@ overflow: hidden;
 	padding-top: 20px;
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+.commentTable {
+	width: 900px;
+}
+
+#comment-body {
+	margin-left: 30%;
+}
+
+.commentAddBtn {
+	margin-left: 10px;
+	display: inline-block;
+
 }
 
 /*ERROR PAGES*/

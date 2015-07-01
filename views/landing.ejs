@@ -1,37 +1,37 @@
 <% include partials/landingHeader %>
 
-<div id="banner"> 
+<div id="banner" role="banner"> 
 	<a href="/">
 		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap">
 	</a>
-	<a href="/" class="banner-content hvr-underline-from-center"> About</a>
-	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center"> Learn</a>
+	<a href="/" class="banner-content hvr-underline-from-center" role="nav"> About</a>
+	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center" role="nav"> Learn</a>
 	<% if (currentUser !== ""){ %>
 	<a href="/profile">
-		<div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
+		<div class="banner-content" id="photo-div" role="nav" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
 	</a>
 	<% } %>
 	<% if (currentUser == ""){ %>
- 		<a href="/login" class="banner-content hvr-underline-from-center" id="banner-login"> Login</a>
+ 		<a href="/login" class="banner-content hvr-underline-from-center" id="banner-login" role="nav"> Login</a>
 	<% } else { %>
-		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout"> Logout</a>
+		<a href="/logout" class="banner-content hvr-underline-from-center" id="banner-logout" role="nav"> Logout</a>
 	<% } %>
-	<a href="/issues" class="banner-content hvr-underline-from-center" id="banner-issues"> Issues</a>
+	<a href="/issues" class="banner-content hvr-underline-from-center" id="banner-issues" role="nav"> Issues</a>
 
 </div>
 
 
-	<div id="map-controls">
-		<div id="city-search">
+	<div id="map-controls" role="application" title="Google Map and Controls">
+		<div id="city-search" role="search">
 			<form action="/issues" method="GET" id="form-control">
-				<input type="text" class="form-control" name="address" id="address-search" placeholder= "Search by City and State" autofocus>
+				<input type="text" class="form-control" name="address" role="search" id="address-search" placeholder= "Search by City and State" autofocus>
 			</form>	
 		</div>
 		<button id="locate-me">Find Me! <img src="/assets/mapIcons/locate.gif" alt=""></button>
 		<div id="loader-container">
   	<p id="loadingText">Loading</p>
 	</div>
-		<div id='map-canvas' class='map-canvas' data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
+		<div id='map-canvas' class='map-canvas' role="application" data-options='{"properties":{"dropMarker":"true","geolocate":true,"isReport":true,"mapTypeControl":true,"flexy":true}}'></div>
 	</div>
 
 	<div id="issues-box">
