@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/ADAMAP_v1');
+mongoose.connect( process.env.MONGOLAB_URI || "mongodb://localhost/ADAmap_V2")
 
 
 // mongoose.set('debug', true);
