@@ -1,3 +1,4 @@
+
 $(function() {
   var map,
 			mapDiv = document.getElementById('map-canvas'),
@@ -267,7 +268,7 @@ $(function() {
       var getState = $('#states').val();
       var address = encodeURIComponent(getAddress + ', ' + getState);
       // console.log(address);
-      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+      var url = 'http://maps.googleapis.com/maps/api/geocode/json?address=';
       var gk = 'AIzaSyAeeC94VEj-4SfsDUOOhqnRjIo-KnbK1Mw';
 
       
