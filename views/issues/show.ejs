@@ -20,9 +20,33 @@
 
 </div>
 
-<div id="main-content">
+<div id="show-main-content">
 
-	
+
+<h1 class="issTitle"> <%= issue.title %></h1>
+
+<h3 class="issNum"> ADAmap Issue# <%= issue.issueNum %> </h3>
+
+<% if (currentUser !== ""){ %>
+	<div class="thumbsUp" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id= <%= issue._id %>></div>
+<% } %>
+
+<h3 class="issVotes"> This issue has <%= issue.votes %> votes.</h3>
+
+<h3 class="issAddress"> Located at: <%= issue.address %> </h3>
+<div class="issImageBox">
+	<img src="<%= issue.image %>" class="issImage" alt="IssueImg" onerror="this.src='/assets/noImg.jpg'">
+</div>	
+
+<div class="issueDescriptionBox">
+	<p><STRONG>Issue Description:<STRONG/></p>
+	<p class="descripText"> <%= issue.description  %> </p>
+</div>
+<p class="issCreated"> Created on: <%= issue.dateCreated %> by <a href=" "><%= issue.user.local.username %> </a> </p>
+
+
+
+
 
 </div>
 

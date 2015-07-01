@@ -532,6 +532,77 @@ li {
 }
 
 
+/*SHOW PAGE*/
+
+
+#show-main-content {
+	margin-left: 30px;
+	margin-top: 80px;
+}
+
+.issTitle {
+text-align: center;
+padding-top: 20px;
+padding-bottom: 20px;	
+}
+
+.issNum {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	display: inline-block;
+}
+
+.issVotes {
+	position: absolute;
+	margin-left: 690px;
+	margin-top: -30px;
+}
+
+.thumbsUp {
+	position: absolute;
+	margin-left: 890px;
+	margin-top: -45px;
+}
+
+.issAddress {
+
+}
+
+.issImage {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 200px;
+	height: 300px;
+	width: 300px;
+	display: inline-block;
+	border: 3px solid rgb(38,129,206);
+}
+
+.issImageBox {
+
+}
+.issCreated {
+
+}
+
+.issueDescriptionBox {
+position: absolute;
+display: inline-block;
+margin-left: 684px;
+margin-top: -330px;
+border: 3px solid rgb(38,129,206);
+width: 300px;
+height: 300px;
+overflow: hidden;
+}
+
+.descripText{
+	font-weight: normal;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 /*ERROR PAGES*/
 
 #error-codeArt {
