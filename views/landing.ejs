@@ -1,3 +1,4 @@
+
 <% include partials/landingHeader %>
 
 <div id="banner" role="banner"> 
@@ -5,7 +6,7 @@
 		<img src="/assets/logo146.png" id="logo-banner" alt="ADAmap" title="Image of ADAmap Logo">
 	</a>
 	<a href="/about" class="banner-content hvr-underline-from-center" role="nav" title="About Page"> About</a>
-	<a href="http://www.ada.gov/" class="banner-content hvr-underline-from-center" role="nav" title="Link to ADA.gov"> Learn</a>
+	<a href="http://www.ada.gov/" target="_blank" class="banner-content hvr-underline-from-center" role="nav" title="Link to ADA.gov"> Learn</a>
 	<% if (currentUser !== ""){ %>
 	<a href="/profile">
 		<div class="banner-content" id="photo-div" role="nav" title="Link to users profile" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>

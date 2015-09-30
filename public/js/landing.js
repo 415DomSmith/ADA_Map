@@ -111,6 +111,7 @@ $(function() {
               '<div class="issueBox-date">' + issue.dateCreated + '</div></td>' +
               '<td class="issueBox-col3">' + 
               '<div class="issueBox-votes"> votes: ' + issue.votes + '</div>';
+
               if (document.cookie) {
               tableContent += '<div class="issueBox-voteIcon" id="voteIcon"> <img src="/assets/thumbs/tugrey.png" alt="Up-Vote!" class="voteUp" data-id="' + issue._id + '"></div>';
               }
@@ -126,9 +127,11 @@ $(function() {
 //_ID in URL is stored in a data-id tag on the image. Server looks up that issue ID, and checks to see if user has voted for it already (user _ID stored in an array as part of issue schema).
 //If user ID is in array, server returns an error, which is handled by AJAX .fail callback. If user hasn't voted, thumbs stays blue. Server increments votes count, and adds user _ID to array.
           $('.voteUp').click(function (e){
-            $(this).attr('src', "/assets/thumbs/tuclicked.png");
-            $(this).attr('class', "clicked")
-            var id = $(this).attr('data-id');
+            // let's do some selector caching so that we don't need to find $(this) three times!
+            var $this = $(this)
+            $this.attr('src', "/assets/thumbs/tuclicked.png");
+            $this.attr('class', "clicked")
+            var id = $this.attr('data-id');
               
             $.ajax({
               type: 'PUT',
@@ -137,7 +140,7 @@ $(function() {
             }).done (function (){
               
             }).fail(function (err){
-                $( "<p>Issue voted on already!</p>" ).insertBefore('.clicked');
+                $( "<p>Issue voted on already!</p>" ).before('.clicked');
                 $('.clicked').replaceWith('<img src="/assets/thumbs/Ximg.png" alt="voted!" id="alreadyVoted">');    
             })
           });                             

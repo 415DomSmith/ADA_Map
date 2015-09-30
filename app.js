@@ -4,7 +4,7 @@
 // TODO - Look up licensing stuff to put in here
 
   
-// TODO - Make more modular... app.js is almost 500 lines of code... 
+// TODO - Make more modular... app.js is almost 600 lines of code... 
 
 // =====================================
 // DEPENDENCIES ========================
