@@ -32,28 +32,21 @@ var request 		 = require('request');
 // ==================================================
 // QUOTA GUARD STUFF TO MAKE API CALLS FROM HEROKU ==
 // ==================================================
-// var http, options, proxy, url;
-
-// http = require("http");
-// url = require("url");
-
-// proxy = url.parse(process.env.QUOTAGUARD_URL);
-// target  = url.parse("http://maps.googleapis.com/maps/api/geocode/json?address=");
-
-// options = {
-//   hostname: proxy.hostname,
-//   port: proxy.port || 80,
-//   path: target.href,
-//   headers: {
-//     "Proxy-Authorization": "Basic " + (new Buffer(proxy.auth).toString("base64")),
-//     "Host" : target.hostname
-//   }
-// };
-
-// http.get(options, function(res) {
-//   res.pipe(process.stdout);
-//   return console.log("status code", res.statusCode);
-// });
+var options = {
+  proxy: process.env.QUOTAGUARDSTATIC_URL,
+  url: 'http://ip.jsontest.com/',
+  headers: {
+      'User-Agent': 'node.js'
+  }
+};
+ 
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+        console.log(body);
+  }
+}
+ 
+request(options, callback);
 
 
 // =====================================
