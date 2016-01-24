@@ -1,5 +1,6 @@
 
 $(function() {
+  console.log("JS LOADED");
   var map,
 			mapDiv = document.getElementById('map-canvas'),
       markersArray = []

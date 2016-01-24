@@ -391,7 +391,7 @@ app.get('/about', function (req, res){
           res.redirect("/profile")
         });
 
-    // facebook -------------------------------
+    // TODO: facebook -------------------------------
 
         // send to facebook to do the authentication
         app.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -403,7 +403,7 @@ app.get('/about', function (req, res){
                 failureRedirect : '/'
             }));
 
-    // twitter --------------------------------
+    // TODO: twitter --------------------------------
 
         // send to twitter to do the authentication
         app.get('/auth/twitter', passport.authenticate('twitter', { scope : 'email' }));
@@ -416,7 +416,7 @@ app.get('/about', function (req, res){
             }));
 
 
-    // google ---------------------------------
+    // TODO: google ---------------------------------
 
         // send to google to do the authentication
         app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
@@ -442,7 +442,7 @@ app.get('/about', function (req, res){
             failureFlash : true // allow flash messages
         }));
 
-    // facebook -------------------------------
+    // TODO: facebook -------------------------------
 
         // send to facebook to do the authentication
         app.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
@@ -454,7 +454,7 @@ app.get('/about', function (req, res){
                 failureRedirect : '/'
             }));
 
-    // twitter --------------------------------
+    // TODO: twitter --------------------------------
 
         // send to twitter to do the authentication
         app.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
@@ -467,7 +467,7 @@ app.get('/about', function (req, res){
             }));
 
 
-    // google ---------------------------------
+    // TODO: google ---------------------------------
 
         // send to google to do the authentication
         app.get('/connect/google', passport.authorize('google', { scope : ['profile', 'email'] }));
@@ -480,7 +480,7 @@ app.get('/about', function (req, res){
             }));
 
 // =============================================================================
-// UNLINK ACCOUNTS =============================================================
+// TODO: UNLINK ACCOUNTS =============================================================
 // =============================================================================
 // used to unlink accounts. for social accounts, just remove the token
 // for local account, remove email and password
@@ -523,8 +523,11 @@ app.get('/about', function (req, res){
         });
     });
 
-//-----comments----- STRETCH GOAL//TODO -- build comment system for issues and users
+// 
 
+// ==================================================================================
+// ==== COMMENTS ====== STRETCH GOAL//TODO -- build comment system for users wall ===
+// ==================================================================================
 app.post("/issues/:issue_id/comments", isLoggedIn, function (req, res) {
   db.Comment.create(req.body.comment, function (err, comment) { //creates a comment based on the form body submit, comment data is second param and is used below
     console.log(req.session.passport.user);
